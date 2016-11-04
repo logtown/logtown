@@ -1,0 +1,6 @@
+machine:
+  node:
+    version: 6.9.1
+dependencies:
+  cache_directories:
+    - "node_modules"

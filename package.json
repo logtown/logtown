@@ -1,0 +1,44 @@
+{
+  "name": "logtown",
+  "version": "1.0.0",
+  "description": "Simple Logging Facade for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zemd/logtown"
+  },
+  "author": "Dmitry Zelenetskiy <dmitry.zelenetskiy@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zemd/logtown/issues"
+  },
+  "homepage": "https://github.com/zemd/logtown",
+  "dependencies": {
+    "ember-empty-object": "^1.0.1",
+    "lodash": "^4.16.6"
+  },
+  "devDependencies": {
+    "ava": "0.16.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "sources": [
+      "src/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "optionalDependencies": {
+    "debug": "^2.2.0",
+    "pad": "^1.0.2",
+    "raven": "^0.12.1",
+    "winston": "^2.3.0"
+  }
+}
