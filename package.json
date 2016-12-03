@@ -36,6 +36,7 @@
     "babel": "inherit"
   },
   "optionalDependencies": {
+    "bunyan": "1.8.5",
     "debug": "^2.2.0",
     "pad": "^1.0.2",
     "raven": "^0.12.1",
