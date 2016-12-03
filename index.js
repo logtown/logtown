@@ -23,7 +23,7 @@ function sendMessage(id, level, ...rest) {
   wrappers.concat(options.wrappers)
     .filter((w) => options.disable.indexOf(level.toUpperCase()) === -1)
     .forEach((wrapper) => {
-      if (_.isFunction(wrapper[level])) {
+      if (_.isFunction(wrapper[level.toLowerCase()])) {
         return wrapper[level](id, stats, ...rest);
       } else if (_.isFunction(wrapper.log)) {
         return wrapper.log(id, level, stats, ...rest);
