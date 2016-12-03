@@ -5,8 +5,8 @@ const _ = require('lodash');
 const options = new WeakMap();
 
 class OptionsHolder {
-  constructor(options = {}) {
-    options.set(this, options);
+  constructor(opts = {}) {
+    options.set(this, opts);
   }
 
   setOption(option, value) {
