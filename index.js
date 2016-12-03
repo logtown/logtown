@@ -17,14 +17,16 @@ function sendMessage(id, level, ...rest) {
     _.omit(configs, ['namespaces', 'disable']),
     {disable: configs.useGlobal ? _.get(global, `logtown.namespaces.${id}.disable`, []) : []}
   );
+  options.disable = options.disable.map(d => d.toUpperCase());
 
   let stats = calcStats();
+  let levelMethod = level.toLowerCase();
 
   wrappers.concat(options.wrappers)
     .filter((w) => options.disable.indexOf(level.toUpperCase()) === -1)
     .forEach((wrapper) => {
-      if (_.isFunction(wrapper[level.toLowerCase()])) {
-        return wrapper[level](id, stats, ...rest);
+      if (_.isFunction(wrapper[levelMethod])) {
+        return wrapper[levelMethod](id, stats, ...rest);
       } else if (_.isFunction(wrapper.log)) {
         return wrapper.log(id, level, stats, ...rest);
       }
