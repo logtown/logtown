@@ -8,6 +8,7 @@
 [![CircleCI](https://circleci.com/gh/zemd/logtown/tree/master.svg?style=svg)](https://circleci.com/gh/zemd/logtown/tree/master)
 [![dependencies:?](https://img.shields.io/david/zemd/logtown.svg)](https://david-dm.org/zemd/logtown)
 [![devDependencies:?](https://img.shields.io/david/dev/zemd/logtown.svg?style=flat)](https://david-dm.org/zemd/logtown)
+[![Inline docs](http://inch-ci.org/github/zemd/logtown.svg?branch=master)](http://inch-ci.org/github/zemd/logtown)
 
 ## Installation
 
