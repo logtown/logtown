@@ -25,7 +25,7 @@ class ConsoleWrapper extends OptionsHolder {
   }
 
   debug(id, stats, ...rest) {
-    console.log('%c' + this.formatTitle('DEBUG', id, stats), `color: ${colorUtils.next()};`, ...rest);
+    console.log('%c' + this.formatTitle('DEBUG', id, stats), `color: ${colorUtils.next(id)};`, ...rest);
   }
 
   info(id, stats, ...rest) {
