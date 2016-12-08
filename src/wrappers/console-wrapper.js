@@ -21,7 +21,7 @@ class ConsoleWrapper extends OptionsHolder {
   }
 
   silly(id, stats, ...rest) {
-    console.log(this.formatTitle('SILLY', id, stats), ...rest);
+    console.log('%c' + this.formatTitle('SILLY', id, stats), `color: ${colorUtils.next(id)};`, ...rest);
   }
 
   debug(id, stats, ...rest) {
@@ -29,15 +29,15 @@ class ConsoleWrapper extends OptionsHolder {
   }
 
   info(id, stats, ...rest) {
-    console.info('%c' + this.formatTitle('INFO', id, stats), `color: green;`, ...rest);
+    console.info('%c' + this.formatTitle('INFO', id, stats), `color: ${colorUtils.next(id)};`, ...rest);
   }
 
   warn(id, stats, ...rest) {
-    console.warn(this.formatTitle('WARN', id, stats), ...rest);
+    console.warn('%c' + this.formatTitle('WARN', id, stats), `color: ${colorUtils.next(id)};`, ...rest);
   }
 
   error(id, stats, ...rest) {
-    console.error(this.formatTitle('ERROR', id, stats), ...rest);
+    console.error('%c' + this.formatTitle('ERROR', id, stats), `color: ${colorUtils.next(id)};`, ...rest);
 
     if (this.getOption('throwOnError', true) === true) {
       /* eslint-enable no-console */

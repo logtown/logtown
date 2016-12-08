@@ -12,9 +12,15 @@ const colors = [
 ];
 
 const colorMap = new EmptyObject();
+let counter = 0;
 
 exports.next = function (id = 'default') {
-  colorMap[id] = (colorMap[id] | 0) + 1;
-  return colors[Math.ceil(colorMap[id] / colors.length)]
+  if (id in colorMap) {
+    return colors[colorMap[id]]
+  }
+
+  colorMap[id] = counter;
+  counter += 1;
+  return colors[colorMap[id] % colors.length]
 };
 
