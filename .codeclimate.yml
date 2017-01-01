@@ -1,6 +1,4 @@
 engines:
-  nodesecurity:
-    enabled: true
   duplication:
     enabled: true
     config:
