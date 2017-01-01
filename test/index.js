@@ -1,6 +1,7 @@
 'use strict';
 
-const test = require('ava');
+// const test = require('ava');
+import test from 'ava';
 
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
