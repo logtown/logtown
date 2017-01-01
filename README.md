@@ -3,12 +3,12 @@
 > Simple Logging Facade for JavaScript.
 
 [![npm version](https://badge.fury.io/js/logtown.svg)](https://www.npmjs.com/package/logtown)
-[![Build Status](https://travis-ci.org/zemd/logtown.svg?branch=master)](https://travis-ci.org/zemd/logtown)
-[![Code Climate](https://codeclimate.com/github/zemd/logtown/badges/gpa.svg)](https://codeclimate.com/github/zemd/logtown)
-[![CircleCI](https://circleci.com/gh/zemd/logtown/tree/master.svg?style=svg)](https://circleci.com/gh/zemd/logtown/tree/master)
-[![dependencies:?](https://img.shields.io/david/zemd/logtown.svg)](https://david-dm.org/zemd/logtown)
-[![devDependencies:?](https://img.shields.io/david/dev/zemd/logtown.svg?style=flat)](https://david-dm.org/zemd/logtown)
-[![Inline docs](http://inch-ci.org/github/zemd/logtown.svg?branch=master)](http://inch-ci.org/github/zemd/logtown)
+[![Build Status](https://travis-ci.org/logtown/logtown.svg?branch=master)](https://travis-ci.org/logtown/logtown)
+[![Code Climate](https://codeclimate.com/github/logtown/logtown/badges/gpa.svg)](https://codeclimate.com/github/logtown/logtown)
+[![CircleCI](https://circleci.com/gh/logtown/logtown/tree/master.svg?style=svg)](https://circleci.com/gh/logtown/logtown/tree/master)
+[![dependencies:?](https://img.shields.io/david/logtown/logtown.svg)](https://david-dm.org/logtown/logtown)
+[![devDependencies:?](https://img.shields.io/david/dev/logtown/logtown.svg?style=flat)](https://david-dm.org/logtown/logtown)
+[![Inline docs](http://inch-ci.org/github/logtown/logtown.svg?branch=master)](http://inch-ci.org/github/logtown/logtown)
 
 ## Installation
 
@@ -24,8 +24,10 @@ yarn add logtown
 
 ## Usage
 
-First of all you should notice, that `logtown` is not a logger. You can use any logger you want underneath, there are a lot of great tools like intel, winston and others.
-And if you don't define any wrappers you won't see any output. There are several ready for use wrappers contained in the package. But you can use your own in any time.
+First of all you should notice, that `logtown` is not a logger. You can use any logger you want underneath, there are a 
+lot of great tools like intel, winston and others.
+And if you don't define any wrappers you won't see any output. There are several ready for use wrappers contained in the 
+package. But you can use your own in any time.
 
 So let's start from simple use case:
 ```javascript

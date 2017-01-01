@@ -1,6 +1,11 @@
 'use strict';
 
-const EmptyObject = require('ember-empty-object');
+/*
+ * @fileoverview these are utils for browser color generation
+ */
+
+
+import EmptyObject from 'ember-empty-object';
 
 const colors = [
   'lightseagreen',
@@ -14,7 +19,13 @@ const colors = [
 const colorMap = new EmptyObject();
 let counter = 0;
 
-exports.next = function (id = 'default') {
+/**
+ * Get next color
+ *
+ * @param {string} id
+ * @return {string}
+ */
+export const next = function (id = 'default') {
   if (id in colorMap) {
     return colors[colorMap[id]]
   }

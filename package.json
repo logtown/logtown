@@ -1,27 +1,43 @@
 {
   "name": "logtown",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Simple Logging Facade for JavaScript",
-  "main": "index.js",
+  "main": "es6/common/index.js",
+  "jsnext:main": "index.js",
   "scripts": {
-    "test": "ava --verbose"
+    "test": "ava --verbose",
+    "es5-umd": "rollup --config rollup.config.browser.es5.js",
+    "es5-commonjs": "rollup --config rollup.config.cjs.es5.js",
+    "es6-commonjs": "rollup --config rollup.config.cjs.es6.js",
+    "make": "npm run es5-umd && npm run es5-commonjs && npm run es6-commonjs"
   },
+  "keywords": [
+    "logtown",
+    "logger",
+    "log",
+    "logging facade"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/zemd/logtown"
+    "url": "https://github.com/logtown/logtown"
   },
   "author": "Dmitry Zelenetskiy <dmitry.zelenetskiy@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zemd/logtown/issues"
+    "url": "https://github.com/logtown/logtown/issues"
   },
-  "homepage": "https://github.com/zemd/logtown",
+  "homepage": "https://github.com/logtown/logtown",
   "dependencies": {
     "ember-empty-object": "^1.0.1",
-    "lodash": "^4.16.6"
+    "lodash": "^4.16.6",
+    "pad": "^1.0.2"
   },
   "devDependencies": {
-    "ava": "0.16.0"
+    "ava": "0.16.0",
+    "babel-plugin-external-helpers": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "rollup": "^0.39.2",
+    "rollup-plugin-babel": "^2.7.1"
   },
   "ava": {
     "files": [
@@ -34,12 +50,5 @@
       "babel-register"
     ],
     "babel": "inherit"
-  },
-  "optionalDependencies": {
-    "bunyan": "1.8.5",
-    "debug": "^2.2.0",
-    "pad": "^1.0.2",
-    "raven": "^0.12.1",
-    "winston": "^2.3.0"
   }
 }

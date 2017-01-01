@@ -57,3 +57,40 @@ test('Logger will not execute disabled WARN level', t => {
   logger.warn('message');
   t.pass();
 });
+
+test('Testing logger factory method to fetch it', t => {
+  t.plan(3);
+
+  const Logger = require('../');
+  Logger.addWrapper({
+    log(id, level, stats, ...rest) {
+      t.is(id, 'test2');
+      t.is(level, 'DEBUG');
+      t.is(rest[0], 'message');
+    }
+  });
+
+  const logger = Logger('test2');
+  logger.debug('message');
+});
+
+test('Add wrapper as function', t => {
+  t.plan(6);
+
+  const Logger = require('../');
+
+  Logger.addWrapper(function (id, level, stats, ...rest) {
+    t.is(id, 'test3');
+    t.is(level, 'DEBUG');
+    t.is(rest[0], 'message');
+  });
+
+  Logger.addWrapper((id, level, stats, ...rest) => {
+    t.is(id, 'test3');
+    t.is(level, 'DEBUG');
+    t.is(rest[0], 'message');
+  });
+
+  const logger = Logger.getLogger('test3');
+  logger.debug('message');
+});
