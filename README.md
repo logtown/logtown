@@ -147,6 +147,33 @@ const Logger = require('logtown');
 Logger.configure(config('logtown', {}))
 ```
 
+## Experimental feature
+
+By default you are limited with defined method set. It gives possibility to rely on logger api anytime and be ready to
+swap out it when needed. But sometimes you would need to use your logger's very specific functionality. For example,
+`console.group`. There are 2 ways of using it - by direct calling console.group method, that is bad and in some level 
+unstable. And second one, to notify somehow your wrapper.
+
+So `logtown` introduces `send` method. That is behaves the same as other methods, but gives possibility to pass `level`.
+
+```javascript
+Logger.addWrapper({
+    group: function (id, stats, ...rest) {
+        console.group(id);
+    },
+    groupend: function(id, stats, ...rest) {
+        console.groupEnd(id);
+    }
+});
+
+const logger = Logger.getLogger('my-namespace');
+logger.send('group');
+logger.debug('Hello World');
+logger.send('groupend');
+```
+
+Important to note that `send` method won't fallback to `log` method if it exists in wrapper.
+
 ## License
 
 Logtown is released under the MIT license.

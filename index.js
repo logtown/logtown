@@ -13,9 +13,10 @@ const LEVELS = Object.freeze({SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN
  *
  * @param {string} id
  * @param {string} level
+ * @param {boolean} fallbackToLog
  * @param {[]} rest
  */
-function sendMessage(id, level, ...rest) {
+function sendMessage(id, level, fallbackToLog, ...rest) {
   let options = _.merge(
     {},
     _.get(configs, `namespaces.${id}`, {}),
@@ -33,7 +34,7 @@ function sendMessage(id, level, ...rest) {
     .forEach((wrapper) => {
       if (_.isFunction(wrapper[levelMethod])) {
         return wrapper[levelMethod](id, stats, ...rest);
-      } else if (_.isFunction(wrapper.log)) {
+      } else if (_.isFunction(wrapper.log) && !!fallbackToLog) {
         return wrapper.log(id, level, stats, ...rest);
       }
     });
@@ -51,7 +52,7 @@ function calcStats() {
 }
 
 /**
- * Creating new logger instance
+ * Create new logger instance
  *
  * @param {string} id
  * @return {{id, silly: (function(...[*])), debug: (function(...[*])), info: (function(...[*])), warn: (function(...[*])), error: (function(...[*]))}}
@@ -63,19 +64,23 @@ function createLogger(id) {
       return id;
     },
     silly(...rest) {
-      log(LEVELS.SILLY, ...rest);
+      log(LEVELS.SILLY, true, ...rest);
     },
     debug(...rest) {
-      log(LEVELS.DEBUG, ...rest);
+      log(LEVELS.DEBUG, true, ...rest);
     },
     info(...rest) {
-      log(LEVELS.INFO, ...rest);
+      log(LEVELS.INFO, true, ...rest);
     },
     warn(...rest) {
-      log(LEVELS.WARN, ...rest);
+      log(LEVELS.WARN, true, ...rest);
     },
     error(...rest) {
-      log(LEVELS.ERROR, ...rest);
+      log(LEVELS.ERROR, true, ...rest);
+    },
+    // CAUTION: experimental feature
+    send(level, ...rest) {
+      log(level, false, ...rest);
     }
   }
 }
