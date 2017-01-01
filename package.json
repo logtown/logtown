@@ -5,7 +5,7 @@
   "main": "es6/common/index.js",
   "jsnext:main": "index.js",
   "scripts": {
-    "test": "ava --verbose",
+    "test": "npm run make && ava --verbose",
     "es5-umd": "rollup --config rollup.config.browser.es5.js",
     "es5-commonjs": "rollup --config rollup.config.cjs.es5.js",
     "es6-commonjs": "rollup --config rollup.config.cjs.es6.js",
