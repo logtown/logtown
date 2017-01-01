@@ -1,6 +1,11 @@
 engines:
+  nodesecurity:
+    enabled: true
   duplication:
     enabled: true
+    config:
+      languages:
+        - javascript
     exclude_fingerprints:
-    - e75408c1415eeb929aa7aaa74cc26576
-    - 7fddc2c039846bfb660ae15b502b8beb
+      - e75408c1415eeb929aa7aaa74cc26576
+      - 7fddc2c039846bfb660ae15b502b8beb
