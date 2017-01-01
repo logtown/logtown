@@ -24,9 +24,9 @@ yarn add logtown
 
 ## Usage
 
-First of all you should notice, that `logtown` is not a logger. You can use any logger you want underneath, there are a 
+First of all you should notice, that `logtown` is not a *logger*. You can use any logger you want underneath, there are a 
 lot of great tools like intel, winston and others.
-And if you don't define any wrappers you won't see any output. There are several ready for use wrappers contained in the 
+And if you don't define any wrappers you won't see any output. There are 2 ready for use wrappers contained in the 
 package. But you can use your own in any time.
 
 So let's start from simple use case:
@@ -43,6 +43,10 @@ Logger.addWrapper({
 
 // Once you added wrapper you can use logger in any place of your app
 const logger = Logger.getLogger('mymodule-label');
+// if you prefer factory method then you can use getLogger as:
+// const logger = require('logtown')('my-namespace');
+// or 
+// const logger = Logger('my-namespace');
 
 logger.silly('Silly message');
 logger.debug('Debug message');
@@ -51,13 +55,59 @@ logger.warn('Warn message');
 logger.error('Error message');
 ```
 
+### Using in es5 environment
+
+There are several precompiled versions of this module placed in folders `es5` and `es6`. You might select the one you
+needed by importing `require('logtown/es5/common')` for old commonjs environments.
+ 
+### Adding new wrapper
+
+Adding wrapper as you noticed before in the example, pretty simple operation. You required to implement at least one 
+method or pass single `function` that will work like the most advanced wrapper's function `log`.
+
+Example,
+```javascript
+const Logger = require('logtown');
+
+// passing function as wrapper
+Logger.addWrapper(function (id, level, stats, ...rest) {
+    console.log(`${level} [${id}]`, ...rest);
+});
+
+// the same as above
+Logger.addWrapper({
+    log: function (id, level, stats, ...rest) {
+      console.log(`${level} [${id}]`, ...rest);    
+    }
+});
+
+// pass only one function for required level
+Logger.addWrapper({
+    info: function (id, stats, ...rest) {
+        // log only info messages in this wrapper
+        console.info(...rest);
+    }
+});
+
+class AdvancedWrapper {
+    constructor(options = {}) {
+        this.supperLogger = new SupperLogger(options);
+        // preparing supper logger ...
+    }
+    log(id, level, stats, ...rest) {
+        this.supperLogger.log(...rest);
+    }
+}
+Logger.addWrapper(new AdvancedWrapper({option1: "value"}));
+```
+
 ## Configuration
 
-Logtown can be configured via 3 options: 
+Logtown can be configured in 3 ways: 
  
- * application level configurations
- * logger level configurations
- * global level configurations
+ * by defining application level configurations
+ * by defining logger level configurations
+ * and by defining global level configurations
 
 
  1. Application level is made by using `Logger.configure({})` static method.
@@ -69,14 +119,16 @@ Logtown can be configured via 3 options:
       disable: ['info', 'warn'] // disable globaly specific levels
     });
     ```
- 2. You can set several options also during creating new logger.
+    
+ 2. You can set several options also during creation of the new logger.
 
     ```javascript
     const logger1 = Logger.getLogger('mymodule',  {disable: 'debug'})
     const logger2 = Logger.getLogger('mymodule',  {disable: ['debug', 'info']})
     ```
   
-    Each time you `getLogger` with new configuration, it will be merged with previously defined, even though logger instance will be the same. 
+    Each time you `getLogger` with new configuration, it will be merged with previously defined ones, 
+    even though logger instance will be the same. 
 
  3. In very specific case you need to shut down loggers from nested npm modules that you can't affect on. One of the solutions 
  is to use [peerDependencies](https://docs.npmjs.com/files/package.json#peerdependencies), but if peerDependencies is 

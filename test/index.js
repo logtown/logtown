@@ -1,7 +1,7 @@
 'use strict';
 
 import test from 'ava';
-import Logger from '../';
+import Logger from '../es6/common';
 
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
