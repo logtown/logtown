@@ -1,12 +1,11 @@
 'use strict';
 
-// const test = require('ava');
 import test from 'ava';
+import Logger from '../';
 
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
 
-  const Logger = require('../');
   const logger = Logger.getLogger('test1', {
     wrappers: [
       {
@@ -25,7 +24,6 @@ test('Logger executes custom wrapper via log method and SILLY level', t => {
 test('Logger executes global wrapper via log method and DEBUG level', t => {
   t.plan(3);
 
-  const Logger = require('../');
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -39,7 +37,6 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
 });
 
 test('Logger will not execute disabled WARN level', t => {
-  const Logger = require('../');
   const logger = Logger.getLogger('test3');
 
   Logger.configure({
@@ -62,7 +59,6 @@ test('Logger will not execute disabled WARN level', t => {
 test('Testing logger factory method to fetch it', t => {
   t.plan(3);
 
-  const Logger = require('../');
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -77,8 +73,6 @@ test('Testing logger factory method to fetch it', t => {
 
 test('Add wrapper as function', t => {
   t.plan(6);
-
-  const Logger = require('../');
 
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(id, 'test3');
