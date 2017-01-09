@@ -1,6 +1,5 @@
 'use strict';
 
-import _ from 'lodash';
 import pad from 'pad';
 import {next} from '../utils/color';
 
@@ -71,7 +70,7 @@ class Console {
         // This error was thrown as a convenience so that if you enable
         // "break on all exceptions" in your console,
         // it would pause the execution at this line.
-        throw new Error(_.find(rest, (e) => e instanceof Error) || _.head(rest));
+        throw new Error(rest.find(e => e instanceof Error) || rest[0]);
         /* eslint-disable no-empty */
       } catch (e) {
       }
