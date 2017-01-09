@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import pad from 'pad';
-import color from '../utils/color';
+import {next} from '../utils/color';
 
 /**
  * Default wrapper implementation for simple console browser output
@@ -51,7 +51,7 @@ class Console {
     if (typeof console[level.toLowerCase()] === 'function') {
       method = console[level.toLowerCase()].bind(console);
     }
-    method('%c' + this.formatTitle(id, level.toUpperCase(), maxIdLength), `color: ${color.next(id)};`, ...rest);
+    method('%c' + this.formatTitle(id, level.toUpperCase(), maxIdLength), `color: ${next(id)};`, ...rest);
   }
 
   /**
@@ -63,7 +63,7 @@ class Console {
    * @param {[]} rest
    */
   error(id, {maxIdLength = 0} = {}, ...rest) {
-    console.error('%c' + this.formatTitle(id, 'ERROR', maxIdLength), `color: ${color.next(id)};`, ...rest);
+    console.error('%c' + this.formatTitle(id, 'ERROR', maxIdLength), `color: ${next(id)};`, ...rest);
 
     if (this.options.throwOnError) {
       /* eslint-enable no-console */
