@@ -3,8 +3,11 @@ export default {
   dest: './es6/common/index.js',
   format: 'cjs',
   external: [
-    'lodash',
-    'ember-empty-object'
+    'ember-empty-object',
+    'lodash.get',
+    'lodash.merge',
+    'lodash.set',
+    'lodash.omit'
   ],
   interop: false
 };

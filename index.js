@@ -1,7 +1,10 @@
 'use strict';
 
-import _ from 'lodash';
 import EmptyObject from 'ember-empty-object';
+import lget from 'lodash.get';
+import lmerge from 'lodash.merge';
+import lset from 'lodash.set';
+import lomit from 'lodash.omit';
 
 const loggers = new EmptyObject();
 const configs = new EmptyObject();
@@ -17,12 +20,12 @@ const LEVELS = Object.freeze({SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN
  * @param {[]} rest
  */
 function sendMessage(id, level, fallbackToLog, ...rest) {
-  let options = _.merge(
+  let options = lmerge(
     {},
-    _.get(configs, `namespaces.${id}`, {}),
-    {disable: _.get(configs, 'disable', [])},
-    _.omit(configs, ['namespaces', 'disable']),
-    {disable: configs.useGlobal ? _.get(global, `logtown.namespaces.${id}.disable`, []) : []}
+    lget(configs, `namespaces.${id}`, {}),
+    {disable: lget(configs, 'disable', [])},
+    lomit(configs, ['namespaces', 'disable']),
+    {disable: configs.useGlobal ? lget(global, `logtown.namespaces.${id}.disable`, []) : []}
   );
   options.disable = options.disable.map(d => d.toUpperCase());
 
@@ -32,9 +35,9 @@ function sendMessage(id, level, fallbackToLog, ...rest) {
   wrappers.concat(options.wrappers)
     .filter((w) => options.disable.indexOf(level.toUpperCase()) === -1)
     .forEach((wrapper) => {
-      if (_.isFunction(wrapper[levelMethod])) {
+      if (typeof wrapper[levelMethod] === 'function') {
         return wrapper[levelMethod](id, stats, ...rest);
-      } else if (_.isFunction(wrapper.log) && !!fallbackToLog) {
+      } else if (typeof wrapper.log === 'function' && !!fallbackToLog) {
         return wrapper.log(id, level, stats, ...rest);
       }
     });
@@ -58,7 +61,7 @@ function calcStats() {
  * @return {{id, silly: (function(...[*])), debug: (function(...[*])), info: (function(...[*])), warn: (function(...[*])), error: (function(...[*]))}}
  */
 function createLogger(id) {
-  let log = _.partial(sendMessage, id);
+  let log = (level, fallbackToLog, ...rest) => sendMessage(id, level, fallbackToLog, ...rest);
   return {
     get id() {
       return id;
@@ -108,11 +111,11 @@ function normalizeArray(value = []) {
  */
 function getLogger(id, {disable = [], wrappers = []} = {}) {
   let config = {
-    disable: normalizeArray(disable).map(_.toString),
+    disable: normalizeArray(disable).map(v => v + ''),
     wrappers: normalizeArray(wrappers)
   };
 
-  _.set(configs, `namespaces.${id}`, _.merge(_.get(configs, `namespaces.${id}`, {}), config));
+  lset(configs, `namespaces.${id}`, lmerge(lget(configs, `namespaces.${id}`, {}), config));
 
   return loggers[id] || (loggers[id] = createLogger(id));
 }
@@ -125,8 +128,8 @@ function getLogger(id, {disable = [], wrappers = []} = {}) {
  * @param {{}} namespaces
  */
 function configure({useGlobal = true, disable = [], namespaces = {}} = {}) {
-  let config = {useGlobal: !!useGlobal, disable: normalizeArray(disable).map(_.toString), namespaces};
-  _.merge(configs, config);
+  let config = {useGlobal: !!useGlobal, disable: normalizeArray(disable).map(v => v + ''), namespaces};
+  lmerge(configs, config);
 }
 
 /**
@@ -136,7 +139,7 @@ function configure({useGlobal = true, disable = [], namespaces = {}} = {}) {
  * @param {{log?: Function, silly?: Function, debug?: Function, info?: Function, warn?: Function, error?: Function}|Function} wrapper
  */
 function addWrapper(wrapper) {
-  if (_.isFunction(wrapper.log) || Object.keys(LEVELS).some((level) => _.isFunction(wrapper[level.toLowerCase()]))) {
+  if (typeof wrapper.log === 'function' || Object.keys(LEVELS).some(level => typeof wrapper[level.toLowerCase()] === 'function')) {
     wrappers.push(wrapper);
     return;
   }
