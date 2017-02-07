@@ -4,6 +4,7 @@
 
 [![npm version](https://badge.fury.io/js/logtown.svg)](https://www.npmjs.com/package/logtown)
 [![Known Vulnerabilities](https://snyk.io/test/github/logtown/logtown/badge.svg)](https://snyk.io/test/github/logtown/logtown)
+[![Package Quality](http://npm.packagequality.com/shield/logtown.svg)](http://packagequality.com/#?package=logtown)
 [![Build Status](https://travis-ci.org/logtown/logtown.svg?branch=master)](https://travis-ci.org/logtown/logtown)
 [![Code Climate](https://codeclimate.com/github/logtown/logtown/badges/gpa.svg)](https://codeclimate.com/github/logtown/logtown)
 [![CircleCI](https://circleci.com/gh/logtown/logtown/tree/master.svg?style=svg)](https://circleci.com/gh/logtown/logtown/tree/master)
