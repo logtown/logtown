@@ -2,7 +2,7 @@
 
 import babel from 'rollup-plugin-babel';
 
-export default {
+export default [{
   entry: './index.js',
   dest: './es5/common/index.js',
   format: 'cjs',
@@ -21,4 +21,17 @@ export default {
       ]
     })
   ]
-};
+}, {
+  entry: './plugins/stacktrace.js',
+  dest: './es5/common/plugins/stacktrace.js',
+  format: 'cjs',
+  // external: [],
+  interop: false,
+  plugins: [
+    babel({
+      presets: [
+        ['es2015', { modules: false }]
+      ]
+    })
+  ]
+}];

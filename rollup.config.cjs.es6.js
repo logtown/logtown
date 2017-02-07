@@ -1,4 +1,6 @@
-export default {
+'use strict';
+
+export default [{
   entry: './index.js',
   dest: './es6/common/index.js',
   format: 'cjs',
@@ -9,5 +11,11 @@ export default {
     'lodash.set',
     'lodash.omit'
   ],
-  interop: false
-};
+  interop: false,
+}, {
+  entry: './plugins/stacktrace.js',
+  dest: './es6/common/plugins/stacktrace.js',
+  format: 'cjs',
+  external: [],
+  interop: false,
+}];

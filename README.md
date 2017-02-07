@@ -175,6 +175,21 @@ logger.send('groupend');
 
 Important to note that `send` method won't fallback to `log` method if it exists in wrapper.
 
+## Introducing plugin API
+
+For instance, you want to add debugging info during testing. Let's say you want to log filename:linenumber with your
+favourite winston logger. But you can't([#200](https://github.com/winstonjs/winston/issues/200)). So one of the solutions 
+would be to switch to [tracer](https://github.com/baryon/tracer), or just add right plugin for your logtown configuration.
+
+```javascript
+const Logger = require('logtown');
+
+const pluginFactoryFn = require('logtown/es6/common/plugins/stacktrace');
+Logger.addPlugin(pluginFactoryFn({prependRest: true}));
+```
+
+And that's it, now debug stats are available in all your wrappers. 
+
 ## License
 
 Logtown is released under the MIT license.

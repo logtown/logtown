@@ -1,10 +1,10 @@
 'use strict';
 
 import test from 'ava';
-import Logger from '../es6/common';
 
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
+  const Logger = require('../es6/common');
 
   const logger = Logger.getLogger('test1', {
     wrappers: [
@@ -24,6 +24,8 @@ test('Logger executes custom wrapper via log method and SILLY level', t => {
 test('Logger executes global wrapper via log method and DEBUG level', t => {
   t.plan(3);
 
+  const Logger = require('../es6/common');
+
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -37,6 +39,8 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
 });
 
 test('Logger will not execute disabled WARN level', t => {
+  const Logger = require('../es6/common');
+
   const logger = Logger.getLogger('test3');
 
   Logger.configure({
@@ -59,6 +63,8 @@ test('Logger will not execute disabled WARN level', t => {
 test('Testing logger factory method to fetch it', t => {
   t.plan(3);
 
+  const Logger = require('../es6/common');
+
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -74,6 +80,8 @@ test('Testing logger factory method to fetch it', t => {
 test('Add wrapper as function', t => {
   t.plan(6);
 
+  const Logger = require('../es6/common');
+
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(id, 'test3');
     t.is(level, 'DEBUG');
@@ -88,4 +96,50 @@ test('Add wrapper as function', t => {
 
   const logger = Logger.getLogger('test3');
   logger.debug('message');
+});
+
+test('Add plugin function', t => {
+
+  const Logger = require('../es6/common');
+
+  const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
+  const stackReg2 = /at\s+()(.*):(\d*):(\d*)/i;
+
+  const filelinePlugin = function (id, level, stats, ...rest) {
+    let newStats = JSON.parse(JSON.stringify(stats)); // quick deep cloning
+    let newRest = rest.slice();
+
+    let err = rest.find((obj) => obj instanceof Error);
+
+    let stacklist = (err || new Error()).stack.split('\n').slice(1);
+    let s = stacklist[0];
+    let sp = stackReg.exec(s) || stackReg2.exec(s);
+
+    if (sp && sp.length === 5) {
+      newStats.method = sp[1];
+      newStats.path = sp[2];
+      newStats.line = parseInt(sp[3], 10);
+      newStats.pos = sp[4];
+      newStats.file = newStats.path.split(/[\\/]/).pop();
+
+      newRest.splice(0, 0, `(${newStats.path}:${newStats.line})`);
+    }
+
+    return [id, level, newStats, ...newRest];
+  };
+
+  Logger.addPlugin(filelinePlugin);
+
+  let logger = Logger.getLogger('testing-plugin');
+
+  Logger.addWrapper({
+    error: function (id, stats, ...rest) {
+      t.is(stats.line, 142);
+      t.is(stats.file, 'index.js');
+    }
+  });
+
+  logger.error(new Error('message'));
+
+  t.pass();
 });

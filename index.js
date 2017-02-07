@@ -9,7 +9,12 @@ import lomit from 'lodash.omit';
 const loggers = new EmptyObject();
 const configs = new EmptyObject();
 const wrappers = [];
+const plugins = [];
 const LEVELS = Object.freeze({SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR'});
+
+function cloneFast(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
 
 /**
  * Send log message to all available wrappers
@@ -31,14 +36,21 @@ function sendMessage(id, level, fallbackToLog, ...rest) {
 
   let stats = calcStats();
   let levelMethod = level.toLowerCase();
+  let logArgs = applyPlugins(id, level, stats, ...rest);
+  if (logArgs.length === 0) {
+    logArgs = [id, level, stats, ...rest];
+  }
+
+  let logArgsWithoutLevel = cloneFast(logArgs);
+  logArgsWithoutLevel.splice(1, 1);
 
   wrappers.concat(options.wrappers)
     .filter((w) => options.disable.indexOf(level.toUpperCase()) === -1)
     .forEach((wrapper) => {
       if (typeof wrapper[levelMethod] === 'function') {
-        return wrapper[levelMethod](id, stats, ...rest);
+        return wrapper[levelMethod](...logArgsWithoutLevel);
       } else if (typeof wrapper.log === 'function' && !!fallbackToLog) {
-        return wrapper.log(id, level, stats, ...rest);
+        return wrapper.log(...logArgs);
       }
     });
 }
@@ -52,6 +64,25 @@ function calcStats() {
   return {
     maxIdLength: Math.max(...Object.keys(loggers).map((l) => l.length))
   };
+}
+
+/**
+ * @param {string} id
+ * @param {string} level
+ * @param {{}} stats
+ * @param {*} rest
+ * @return {[]}
+ */
+function applyPlugins(id, level, stats, ...rest) {
+  return plugins.reduce((acc, pluginFn) => {
+    if (!Array.isArray(acc)) {
+      throw new Error('Plugin must return array');
+    }
+    if (acc.length === 0) {
+      console.warn(`Possible error. Some of the plugins returned empty array.`);
+    }
+    return pluginFn(...acc);
+  }, [id, level, stats, ...rest]);
 }
 
 /**
@@ -151,6 +182,31 @@ function addWrapper(wrapper) {
 }
 
 /**
+ * Add plugin function. Plugin function must return array with log argument values.
+ */
+function addPlugin(useLevel, fn) {
+  let pluginFn = fn;
+  if (typeof fn === 'undefined' && typeof useLevel === 'function') {
+    pluginFn = useLevel;
+  }
+
+  if (typeof pluginFn !== 'function') {
+    throw new Error('Plugin must be a function!');
+  }
+
+  if (typeof useLevel === 'string') {
+    pluginFn = function (id, level, stats, ...rest) {
+      if (level === useLevel.toUpperCase()) {
+        return fn(id, level, stats, ...rest);
+      }
+      return [id, level, stats, ...rest];
+    };
+  }
+
+  plugins.push(pluginFn);
+}
+
+/**
  * Factory method which returns logger. alias to getLogger()
  *
  * @param {String} id
@@ -165,6 +221,7 @@ const factory = (...args) => {
 factory.getLogger = getLogger;
 factory.configure = configure;
 factory.addWrapper = addWrapper;
+factory.addPlugin = addPlugin;
 factory.LEVELS = LEVELS;
 
 /**
