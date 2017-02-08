@@ -191,6 +191,10 @@ Logger.addPlugin(pluginFactoryFn({prependRest: true}));
 
 And that's it, now debug stats are available in all your wrappers. 
 
+## More articles
+
+ - https://medium.com/@dzelenetskiy/confident-logging-in-nodejs-and-browser-cb97d91e673d
+
 ## License
 
 Logtown is released under the MIT license.
