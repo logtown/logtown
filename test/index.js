@@ -5,6 +5,7 @@ import test from 'ava';
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
   const Logger = require('../es6/common');
+  Logger.clean();
 
   const logger = Logger.getLogger('test1', {
     wrappers: [
@@ -25,6 +26,7 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
   t.plan(3);
 
   const Logger = require('../es6/common');
+  Logger.clean();
 
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
@@ -40,6 +42,7 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
 
 test('Logger will not execute disabled WARN level', t => {
   const Logger = require('../es6/common');
+  Logger.clean();
 
   const logger = Logger.getLogger('test3');
 
@@ -64,6 +67,7 @@ test('Testing logger factory method to fetch it', t => {
   t.plan(3);
 
   const Logger = require('../es6/common');
+  Logger.clean();
 
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
@@ -81,6 +85,7 @@ test('Add wrapper as function', t => {
   t.plan(6);
 
   const Logger = require('../es6/common');
+  Logger.clean();
 
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(id, 'test3');
@@ -101,6 +106,7 @@ test('Add wrapper as function', t => {
 test('Add plugin function', t => {
 
   const Logger = require('../es6/common');
+  Logger.clean();
 
   const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
   const stackReg2 = /at\s+()(.*):(\d*):(\d*)/i;
@@ -134,7 +140,7 @@ test('Add plugin function', t => {
 
   Logger.addWrapper({
     error: function (id, stats, ...rest) {
-      t.is(stats.line, 142);
+      t.is(stats.line, 148);
       t.is(stats.file, 'index.js');
     }
   });
@@ -142,4 +148,31 @@ test('Add plugin function', t => {
   logger.error(new Error('message'));
 
   t.pass();
+});
+
+test('Use tags to disable multiple loggers', t => {
+  t.plan(3);
+
+  const Logger = require('../es6/common');
+  Logger.clean();
+
+  Logger.addWrapper(function (id, level, stats, ...rest) {
+    t.is(id, 'namespace3');
+    t.is(level, 'DEBUG');
+    t.is(rest[0], 'Acceptable logger');
+  });
+
+  Logger.configure({
+    tags: {
+      disable: ['my-lib']
+    }
+  });
+
+  const l1 = Logger.getLogger('namespace1', {tags: ['my-lib']});
+  const l2 = Logger.getLogger('namespace2', {tags: ['my-lib']});
+  const l3 = Logger.getLogger('namespace3');
+
+  l1.debug('Hello World');
+  l2.debug('One more hello');
+  l3.debug('Acceptable logger');
 });

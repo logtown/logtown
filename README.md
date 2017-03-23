@@ -191,6 +191,14 @@ Logger.addPlugin(pluginFactoryFn({prependRest: true}));
 
 And that's it, now debug stats are available in all your wrappers. 
 
+## Tags
+
+```javascript
+const logger = Logger.getLogger('my-namespace', {tags: ['debug', 'lib-1', 'lib-2']});
+
+Logger.configure({tags: { disable: ['lib-1'] }});
+```
+
 ## More articles
 
  - https://medium.com/@dzelenetskiy/confident-logging-in-nodejs-and-browser-cb97d91e673d

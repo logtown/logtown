@@ -33,9 +33,14 @@ function sendMessage(id, level, fallbackToLog, ...rest) {
     {disable: configs.useGlobal ? lget(global, `logtown.namespaces.${id}.disable`, []) : []}
   );
   options.disable = options.disable.map(d => d.toUpperCase());
+  const tagsToDisable = lget(configs, 'tags.disable', []);
+  const namespaceTags = lget(configs, `namespaces.${id}.tags`, []);
+  const containsDisabledTag = tagsToDisable.some(function (element) {
+    return namespaceTags.indexOf(element) > -1;
+  });
 
   let stats = calcStats();
-  let levelMethod = level.toLowerCase();
+  const levelMethod = level.toLowerCase();
   let logArgs = applyPlugins(id, level, stats, ...rest);
   if (logArgs.length === 0) {
     logArgs = [id, level, stats, ...rest];
@@ -44,8 +49,12 @@ function sendMessage(id, level, fallbackToLog, ...rest) {
   let logArgsWithoutLevel = cloneFast(logArgs);
   logArgsWithoutLevel.splice(1, 1);
 
+  if (options.disable.indexOf(level) > -1 ||
+    containsDisabledTag) {
+    return;
+  }
+
   wrappers.concat(options.wrappers)
-    .filter((w) => options.disable.indexOf(level.toUpperCase()) === -1)
     .forEach((wrapper) => {
       if (typeof wrapper[levelMethod] === 'function') {
         return wrapper[levelMethod](...logArgsWithoutLevel);
@@ -138,12 +147,14 @@ function normalizeArray(value = []) {
  * @param {String} id
  * @param {[]} disable
  * @param {[]} wrappers
+ * @param {[]} tags
  * @returns {{silly: Function, debug: Function, info: Function, warn: Function, error: Function}}
  */
-function getLogger(id, {disable = [], wrappers = []} = {}) {
+function getLogger(id, {disable = [], wrappers = [], tags = []} = {}) {
   let config = {
     disable: normalizeArray(disable).map(v => v + ''),
-    wrappers: normalizeArray(wrappers)
+    wrappers: normalizeArray(wrappers),
+    tags: normalizeArray(tags)
   };
 
   lset(configs, `namespaces.${id}`, lmerge(lget(configs, `namespaces.${id}`, {}), config));
@@ -157,9 +168,15 @@ function getLogger(id, {disable = [], wrappers = []} = {}) {
  * @param {boolean} useGlobal
  * @param {[]} disable
  * @param {{}} namespaces
+ * @param {{}} tags
  */
-function configure({useGlobal = true, disable = [], namespaces = {}} = {}) {
-  let config = {useGlobal: !!useGlobal, disable: normalizeArray(disable).map(v => v + ''), namespaces};
+function configure({useGlobal = true, disable = [], namespaces = {}, tags = {}} = {}) {
+  let config = {
+    useGlobal: !!useGlobal,
+    disable: normalizeArray(disable).map(v => v + ''),
+    namespaces,
+    tags: { disable: normalizeArray(lget(tags, 'disable', [])) }
+  };
   lmerge(configs, config);
 }
 
@@ -207,6 +224,14 @@ function addPlugin(useLevel, fn) {
 }
 
 /**
+ * The method is intended to be used during testing. Should not be used.
+ */
+function clean() {
+  wrappers.splice(0, wrappers.length);
+  plugins.splice(0, plugins.length);
+}
+
+/**
  * Factory method which returns logger. alias to getLogger()
  *
  * @param {String} id
@@ -223,6 +248,7 @@ factory.configure = configure;
 factory.addWrapper = addWrapper;
 factory.addPlugin = addPlugin;
 factory.LEVELS = LEVELS;
+factory.clean = clean;
 
 /**
  * @type {{getLogger: ((id:String, config?:{disable, wrappers})=>{silly, debug, info, warn, error}), configure: ((config?)), addWrapper: ((wrapper?)), LEVELS: Object}}
