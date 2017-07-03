@@ -1,5 +1,7 @@
 # Logtown
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/logtown/logtown.svg)](https://greenkeeper.io/)
+
 > Simple Logging Facade for JavaScript.
 
 [![npm version](https://badge.fury.io/js/logtown.svg)](https://www.npmjs.com/package/logtown)
