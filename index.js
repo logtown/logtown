@@ -13,7 +13,16 @@ const plugins = [];
 const LEVELS = Object.freeze({SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR'});
 
 function cloneFast(obj) {
-  return JSON.parse(JSON.stringify(obj));
+  const cache = [];
+  return JSON.parse(JSON.stringify(obj, function(key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        return '[Circular]';
+      }
+      cache.push(value);
+    }
+    return value;
+  }));
 }
 
 /**
