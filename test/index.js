@@ -176,3 +176,18 @@ test('Use tags to disable multiple loggers', t => {
   l2.debug('One more hello');
   l3.debug('Acceptable logger');
 });
+
+test('Can log circular structures', t => {
+  const Logger = require('../es6/common');
+  Logger.clean();
+  Logger.addWrapper(function (id, level, stats, ...rest) {
+    t.is(rest[0], circular);
+  });
+
+  var circular = {};
+  circular.circular = circular;
+
+  const logger = Logger.getLogger('test');
+  logger.info(circular);
+  t.pass();
+})
