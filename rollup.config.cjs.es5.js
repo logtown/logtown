@@ -1,37 +1,40 @@
 'use strict';
 
-import babel from 'rollup-plugin-babel';
+const babel = require('rollup-plugin-babel');
 
-export default [{
-  entry: './index.js',
-  dest: './es5/common/index.js',
-  format: 'cjs',
+module.exports = [{
+  input: './index.js',
+  output: {
+    file: './es5/common/index.js',
+    format: 'cjs',
+    interop: false,
+  },
   external: [
     'ember-empty-object',
     'lodash.get',
     'lodash.merge',
     'lodash.set',
-    'lodash.omit'
+    'lodash.omit',
   ],
-  interop: false,
   plugins: [
     babel({
       presets: [
-        ['es2015', { modules: false }]
-      ]
-    })
-  ]
+        ['es2015', { modules: false }],
+      ],
+    }),
+  ],
 }, {
-  entry: './plugins/stacktrace.js',
-  dest: './es5/common/plugins/stacktrace.js',
-  format: 'cjs',
-  // external: [],
-  interop: false,
+  input: './plugins/stacktrace.js',
+  output: {
+    file: './es5/common/plugins/stacktrace.js',
+    format: 'cjs',
+    interop: false,
+  },
   plugins: [
     babel({
       presets: [
-        ['es2015', { modules: false }]
-      ]
-    })
-  ]
+        ['es2015', { modules: false }],
+      ],
+    }),
+  ],
 }];

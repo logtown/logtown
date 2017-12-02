@@ -14,9 +14,9 @@ test('Logger executes custom wrapper via log method and SILLY level', t => {
           t.is(id, 'test1');
           t.is(level, 'SILLY');
           t.is(rest[0], 'message');
-        }
-      }
-    ]
+        },
+      },
+    ],
   });
 
   logger.silly('message');
@@ -33,7 +33,7 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
       t.is(id, 'test2');
       t.is(level, 'DEBUG');
       t.is(rest[0], 'message');
-    }
+    },
   });
 
   const logger = Logger.getLogger('test2');
@@ -47,14 +47,14 @@ test('Logger will not execute disabled WARN level', t => {
   const logger = Logger.getLogger('test3');
 
   Logger.configure({
-    disable: 'warn'
+    disable: 'warn',
   });
 
   let wrapper = {
     warn() {
       console.log('This method must not be executed');
       t.fail();
-    }
+    },
   };
 
   Logger.addWrapper(wrapper);
@@ -74,7 +74,7 @@ test('Testing logger factory method to fetch it', t => {
       t.is(id, 'test2');
       t.is(level, 'DEBUG');
       t.is(rest[0], 'message');
-    }
+    },
   });
 
   const logger = Logger('test2');
@@ -142,7 +142,7 @@ test('Add plugin function', t => {
     error: function (id, stats, ...rest) {
       t.is(stats.line, 148);
       t.is(stats.file, 'index.js');
-    }
+    },
   });
 
   logger.error(new Error('message'));
@@ -164,12 +164,12 @@ test('Use tags to disable multiple loggers', t => {
 
   Logger.configure({
     tags: {
-      disable: ['my-lib']
-    }
+      disable: ['my-lib'],
+    },
   });
 
-  const l1 = Logger.getLogger('namespace1', {tags: ['my-lib']});
-  const l2 = Logger.getLogger('namespace2', {tags: ['my-lib']});
+  const l1 = Logger.getLogger('namespace1', { tags: ['my-lib'] });
+  const l2 = Logger.getLogger('namespace2', { tags: ['my-lib'] });
   const l3 = Logger.getLogger('namespace3');
 
   l1.debug('Hello World');
@@ -190,4 +190,4 @@ test('Can log circular structures', t => {
   const logger = Logger.getLogger('test');
   logger.info(circular);
   t.pass();
-})
+});

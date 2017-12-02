@@ -1,16 +1,18 @@
 'use strict';
 
-import babel from 'rollup-plugin-babel';
-const nodeResolve = require("rollup-plugin-node-resolve");
-const commonjs = require("rollup-plugin-commonjs");
+const babel = require('rollup-plugin-babel');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
-export default [{
-  entry: './index.js',
-  dest: './es5/umd/index.js',
-  format: 'umd',
+module.exports = [{
+  input: './index.js',
   external: [],
-  interop: false,
-  moduleName: 'logtown',
+  name: 'logtown',
+  output: {
+    file: './es5/umd/index.js',
+    format: 'umd',
+    interop: false,
+  },
   plugins: [
     nodeResolve({
       module: true,
@@ -20,20 +22,21 @@ export default [{
     commonjs(),
     babel({
       presets: [
-        ['es2015', { modules: false }]
+        ['es2015', { modules: false }],
       ],
       plugins: [
-        'external-helpers'
-      ]
-    })
-  ]
+        'external-helpers',
+      ],
+    }),
+  ],
 }, {
-  entry: './plugins/stacktrace.js',
-  dest: './es5/umd/plugins/stacktrace.js',
-  format: 'umd',
-  // external: [],
-  interop: false,
-  moduleName: 'logtown',
+  input: './plugins/stacktrace.js',
+  name: 'logtown',
+  output: {
+    file: './es5/umd/plugins/stacktrace.js',
+    format: 'umd',
+    interop: false,
+  },
   plugins: [
     nodeResolve({
       module: true,
@@ -43,11 +46,11 @@ export default [{
     commonjs(),
     babel({
       presets: [
-        ['es2015', { modules: false }]
+        ['es2015', { modules: false }],
       ],
       plugins: [
-        'external-helpers'
-      ]
-    })
-  ]
+        'external-helpers',
+      ],
+    }),
+  ],
 }];

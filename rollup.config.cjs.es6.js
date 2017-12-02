@@ -1,21 +1,25 @@
 'use strict';
 
-export default [{
-  entry: './index.js',
-  dest: './es6/common/index.js',
-  format: 'cjs',
+module.exports = [{
+  input: './index.js',
+  output: {
+    file: './es6/common/index.js',
+    format: 'cjs',
+    interop: false,
+  },
   external: [
     'ember-empty-object',
     'lodash.get',
     'lodash.merge',
     'lodash.set',
-    'lodash.omit'
+    'lodash.omit',
   ],
-  interop: false,
 }, {
-  entry: './plugins/stacktrace.js',
-  dest: './es6/common/plugins/stacktrace.js',
-  format: 'cjs',
+  input: './plugins/stacktrace.js',
+  output: {
+    file: './es6/common/plugins/stacktrace.js',
+    format: 'cjs',
+    interop: false,
+  },
   external: [],
-  interop: false,
 }];
