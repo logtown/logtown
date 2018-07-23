@@ -1,20 +1,26 @@
 'use strict';
 
-import EmptyObject from 'ember-empty-object';
-import lget from 'lodash.get';
-import lmerge from 'lodash.merge';
-import lset from 'lodash.set';
-import lomit from 'lodash.omit';
+import get from 'dlv';
+import set from 'dset';
+import deepmerge from 'deepmerge';
 
-const loggers = new EmptyObject();
-const configs = new EmptyObject();
+const loggers = Object.create(null);
+let configRegistry = Object.create(null);
 const wrappers = [];
 const plugins = [];
-const LEVELS = Object.freeze({SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR'});
+const LEVELS = Object.freeze({ SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR' });
 
+/**
+ * Support objects with circular references, when sending it to wrappers
+ *
+ * [PR #21](https://github.com/logtown/logtown/pull/21)
+ *
+ * @param obj
+ * @return {*}
+ */
 function cloneFast(obj) {
   const cache = [];
-  return JSON.parse(JSON.stringify(obj, function(key, value) {
+  return JSON.parse(JSON.stringify(obj, function (key, value) {
     if (typeof value === 'object' && value !== null) {
       if (cache.indexOf(value) !== -1) {
         return '[Circular]';
@@ -23,6 +29,19 @@ function cloneFast(obj) {
     }
     return value;
   }));
+}
+
+function buildMessageOptions(id) {
+  const { namespaces, disable, ...confs } = configRegistry;
+  let options = deepmerge.all([
+    {},
+    get(configRegistry, `namespaces.${id}`, {}),
+    { disable: get(configRegistry, 'disable', []) },
+    confs,
+    { disable: configRegistry.useGlobal ? get(global, `logtown.namespaces.${id}.disable`, []) : [] }
+  ]);
+  options.disable = options.disable.map(d => d.toUpperCase());
+  return options;
 }
 
 /**
@@ -34,47 +53,47 @@ function cloneFast(obj) {
  * @param {[]} rest
  */
 function sendMessage(id, level, fallbackToLog, ...rest) {
-  let options = lmerge(
-    {},
-    lget(configs, `namespaces.${id}`, {}),
-    {disable: lget(configs, 'disable', [])},
-    lomit(configs, ['namespaces', 'disable']),
-    {disable: configs.useGlobal ? lget(global, `logtown.namespaces.${id}.disable`, []) : []}
-  );
-  options.disable = options.disable.map(d => d.toUpperCase());
-  const tagsToDisable = lget(configs, 'tags.disable', []);
-  const namespaceTags = lget(configs, `namespaces.${id}.tags`, []);
-  const containsDisabledTag = tagsToDisable.some(function (element) {
+  const levelMethod = level.toLowerCase();
+  const options = buildMessageOptions(id);
+  const tagsToDisable = get(configRegistry, 'tags.disable', []);
+  const namespaceTags = get(configRegistry, `namespaces.${id}.tags`, []);
+  const containsDisabledTag = tagsToDisable.some((element) => {
     return namespaceTags.indexOf(element) > -1;
   });
 
-  let stats = calcStats();
-  const levelMethod = level.toLowerCase();
-  let logArgs = applyPlugins(id, level, stats, ...rest);
-  if (logArgs.length === 0) {
-    logArgs = [id, level, stats, ...rest];
-  }
-
-  let logArgsWithoutLevel = cloneFast(logArgs);
-  logArgsWithoutLevel.splice(1, 1);
-
   if (options.disable.indexOf(level) > -1 ||
     containsDisabledTag) {
+    // if global or logger's setting is saying to disable logging, proceed silently
+    if (!!configRegistry.verbose) {
+      console.log(`Level ${level} or namespace ID ${id} has been disabled. skipping...`);
+    }
     return;
   }
+
+  let stats = calcStats();
+  let logArgs = applyPlugins(id, level, stats, ...rest);
+
+  let logArgsWithoutLevel = cloneFast(logArgs);
+  logArgsWithoutLevel.splice(1, 1); // removing level from args list
 
   wrappers.concat(options.wrappers)
     .forEach((wrapper) => {
       if (typeof wrapper[levelMethod] === 'function') {
+        // use specific logging method if exists, for example, wrapper.info()
         return wrapper[levelMethod](...logArgsWithoutLevel);
       } else if (typeof wrapper.log === 'function' && !!fallbackToLog) {
+        // use generic log method, if fallbackToLog === true. It is always equal to TRUE for standard levels
         return wrapper.log(...logArgs);
+      }
+      if (!!configRegistry.verbose) {
+        console.log(`Wrapper has no valid logging method. fallbackToLog is equal ${fallbackToLog}. skipping...`);
       }
     });
 }
 
 /**
- * Prepare stats. Currently only maxIdLength supported
+ * Prepare stats. Currently only maxIdLength supported in core, can be extended
+ * in custom plugin.
  *
  * @return {{maxIdLength: number}}
  */
@@ -85,6 +104,8 @@ function calcStats() {
 }
 
 /**
+ * Run all plugins. Must return always non empty array with [id, level, stats, ...rest]
+ *
  * @param {string} id
  * @param {string} level
  * @param {{}} stats
@@ -92,15 +113,21 @@ function calcStats() {
  * @return {[]}
  */
 function applyPlugins(id, level, stats, ...rest) {
-  return plugins.reduce((acc, pluginFn) => {
+  const logArgs = plugins.reduce((acc, pluginFn) => {
     if (!Array.isArray(acc)) {
+      console.error('Plugin must return an array', acc);
       throw new Error('Plugin must return array');
     }
     if (acc.length === 0) {
-      console.warn(`Possible error. Some of the plugins returned empty array.`);
+      console.warn(`Possible error. One of the plugins has returned an empty array.`);
     }
     return pluginFn(...acc);
   }, [id, level, stats, ...rest]);
+
+  if (logArgs.length === 0) {
+    return [id, level, stats, ...rest];
+  }
+  return logArgs;
 }
 
 /**
@@ -159,14 +186,14 @@ function normalizeArray(value = []) {
  * @param {[]} tags
  * @returns {{silly: Function, debug: Function, info: Function, warn: Function, error: Function}}
  */
-function getLogger(id, {disable = [], wrappers = [], tags = []} = {}) {
+function getLogger(id, { disable = [], wrappers = [], tags = [] } = {}) {
   let config = {
     disable: normalizeArray(disable).map(v => v + ''),
     wrappers: normalizeArray(wrappers),
     tags: normalizeArray(tags)
   };
 
-  lset(configs, `namespaces.${id}`, lmerge(lget(configs, `namespaces.${id}`, {}), config));
+  set(configRegistry, `namespaces.${id}`, deepmerge(get(configRegistry, `namespaces.${id}`, {}), config));
 
   return loggers[id] || (loggers[id] = createLogger(id));
 }
@@ -178,15 +205,17 @@ function getLogger(id, {disable = [], wrappers = [], tags = []} = {}) {
  * @param {[]} disable
  * @param {{}} namespaces
  * @param {{}} tags
+ * @param {boolean} verbose
  */
-function configure({useGlobal = true, disable = [], namespaces = {}, tags = {}} = {}) {
+function configure({ useGlobal = true, disable = [], namespaces = {}, tags = {}, verbose = false } = {}) {
   let config = {
     useGlobal: !!useGlobal,
     disable: normalizeArray(disable).map(v => v + ''),
     namespaces,
-    tags: { disable: normalizeArray(lget(tags, 'disable', [])) }
+    tags: { disable: normalizeArray(get(tags, 'disable', [])) },
+    verbose
   };
-  lmerge(configs, config);
+  configRegistry = deepmerge(configRegistry, config);
 }
 
 /**
@@ -196,12 +225,20 @@ function configure({useGlobal = true, disable = [], namespaces = {}, tags = {}} 
  * @param {{log?: Function, silly?: Function, debug?: Function, info?: Function, warn?: Function, error?: Function}|Function} wrapper
  */
 function addWrapper(wrapper) {
-  if (typeof wrapper.log === 'function' || Object.keys(LEVELS).some(level => typeof wrapper[level.toLowerCase()] === 'function')) {
+  if (
+    typeof wrapper === 'object' && !Array.isArray(wrapper)
+    &&
+    (
+      typeof wrapper.log === 'function' ||
+      Object.keys(LEVELS).some((lvl) => typeof wrapper[lvl.toLowerCase()] === 'function')
+    )
+  ) {
+    // if wrapper is instance of some class or pure object, it must include at least one method with level name
     wrappers.push(wrapper);
     return;
   }
   if (typeof wrapper === 'function') {
-    wrappers.push({log: wrapper});
+    wrappers.push({ log: wrapper });
     return;
   }
   throw new Error('Wrapper did not implemented a minimum methods required');
@@ -221,7 +258,7 @@ function addPlugin(useLevel, fn) {
   }
 
   if (typeof useLevel === 'string') {
-    pluginFn = function (id, level, stats, ...rest) {
+    pluginFn = (id, level, stats, ...rest) => {
       if (level === useLevel.toUpperCase()) {
         return fn(id, level, stats, ...rest);
       }
@@ -234,6 +271,7 @@ function addPlugin(useLevel, fn) {
 
 /**
  * The method is intended to be used during testing. Should not be used.
+ * @deprecated
  */
 function clean() {
   wrappers.splice(0, wrappers.length);
@@ -243,7 +281,7 @@ function clean() {
 /**
  * Factory method which returns logger. alias to getLogger()
  *
- * @param {String} id
+ * @param {string} id
  * @param {[]} disable
  * @param {[]} wrappers
  * @returns {{silly: Function, debug: Function, info: Function, warn: Function, error: Function}}

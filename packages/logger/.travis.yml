@@ -9,6 +9,4 @@ node_js:
   - "6"
 cache:
   directories:
-    - ~/.npm
-
-script: lerna run test
+  - node_modules

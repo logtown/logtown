@@ -1,0 +1,39 @@
+{
+  "name": "logtown-sentry-server",
+  "version": "1.0.1",
+  "description": "Logtown wrapper for sentry logger on server side",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "es5-commonjs": "rollup --config rollup.config.cjs.es5.js",
+    "build": "npm run es5-commonjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown-sentry-server.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "sentry",
+    "raven",
+    "logtown",
+    "wrapper"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown-sentry-server/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown-sentry-server#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "rollup": "^0.63.4",
+    "rollup-plugin-babel": "^4.0.0-beta.7",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.54"
+  },
+  "peerDependencies": {
+    "raven": "^2.6.3",
+    "logtown": "^2.1.3"
+  }
+}

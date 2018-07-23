@@ -1,0 +1,41 @@
+{
+  "name": "logtown-sentry-browser",
+  "version": "1.0.0",
+  "description": "Logtown wrapper for sentry logger in browser",
+  "main": "es6/common/index.js",
+  "jsnext:main": "index.js",
+  "scripts": {
+    "es5-umd": "rollup --config rollup.config.umd.es5.js",
+    "es6-commonjs": "rollup --config rollup.config.cjs.es6.js",
+    "build": "npm run es5-umd && npm run es6-commonjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "sentry",
+    "raven-js",
+    "logtown",
+    "wrapper"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/sentry-browser#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.54",
+    "rollup": "^0.63.4",
+    "rollup-plugin-babel": "^4.0.0-beta.7"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "raven-js": "*"
+  }
+}

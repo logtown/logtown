@@ -1,0 +1,43 @@
+{
+  "name": "logtown-debug",
+  "version": "1.0.1",
+  "description": "Logtown wrapper for tj's debug tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "DEBUG=* DEBUG_COLORS=0 tape test/**/*.js",
+    "es5-commonjs": "rollup --config rollup.config.cjs.es5.js",
+    "build": "npm run es5-commonjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "debug",
+    "logtown",
+    "wrapper"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/debug#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.54",
+    "rollup": "^0.63.4",
+    "rollup-plugin-babel": "^4.0.0-beta.7",
+    "logtown": "^2.1.3",
+    "debug": "^3.1.0",
+    "tape": "^4.9.1",
+    "std-mocks": "^1.0.1"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "debug": "^3.1.0"
+  }
+}

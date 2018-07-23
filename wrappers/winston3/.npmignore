@@ -1,0 +1,11 @@
+.DS_Store
+.gitignore
+.eslintrc
+.travis.yml
+circle.yml
+*.log
+bench/*
+coverage/*
+test/*
+tmp/*
+.idea
