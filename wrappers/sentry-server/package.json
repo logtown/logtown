@@ -4,7 +4,6 @@
   "description": "Logtown wrapper for sentry logger on server side",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "es5-commonjs": "rollup --config rollup.config.cjs.es5.js",
     "build": "npm run es5-commonjs"
   },
