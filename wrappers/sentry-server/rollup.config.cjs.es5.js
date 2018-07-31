@@ -3,17 +3,24 @@
 import babel from 'rollup-plugin-babel';
 
 export default {
-  entry: './index.js',
-  dest: './es5/index.js',
-  format: 'cjs',
+  input: './index.js',
+  output: {
+    file: './es5/index.js',
+    format: 'cjs',
+    interop: false
+  },
   external: [
     'raven'
   ],
-  interop: false,
   plugins: [
     babel({
       presets: [
-        ['es2015', { modules: false }]
+        ['@babel/preset-env', {
+          'targets': {
+            'browsers': ['last 2 versions', 'safari >= 7']
+          },
+          'modules': false
+        }]
       ]
     })
   ]

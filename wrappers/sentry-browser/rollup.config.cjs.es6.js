@@ -1,9 +1,11 @@
 export default {
-  entry: './index.js',
-  dest: './es6/common/index.js',
-  format: 'cjs',
+  input: './index.js',
+  output: {
+    file: './es6/common/index.js',
+    format: 'cjs',
+    interop: false
+  },
   external: [
     'raven-js'
-  ],
-  interop: false
+  ]
 };

@@ -1,24 +1,39 @@
 'use strict';
 
-import babel from 'rollup-plugin-babel';
+const babel = require('rollup-plugin-babel');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
-export default {
-  entry: './index.js',
-  dest: './es5/umd/index.js',
-  format: 'umd',
+module.exports = {
+  input: './index.js',
+  output: {
+    file: './es5/umd/index.js',
+    format: 'umd',
+    interop: false,
+  },
   external: [
     'raven-js'
   ],
-  interop: false,
-  moduleName: 'logtown-sentry-browser',
+  name: 'logtown-sentry-browser',
   plugins: [
+    nodeResolve({
+      module: true,
+      jsnext: true,
+      main: true,
+    }),
+    commonjs(),
     babel({
       presets: [
-        ['es2015', { modules: false }]
+        ["@babel/preset-env", {
+          "targets": {
+            "browsers": ["last 2 versions", "safari >= 7"]
+          },
+          "modules": false
+        }],
       ],
       plugins: [
-        'external-helpers'
-      ]
-    })
+        '@babel/plugin-external-helpers',
+      ],
+    }),
   ]
 };

@@ -34,14 +34,14 @@
   },
   "devDependencies": {
     "ava": "^1.0.0-beta.6",
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/register": "^7.0.0-beta.54",
-    "@babel/preset-env": "^7.0.0-beta.54",
-    "@babel/plugin-external-helpers": "^7.0.0-beta.54",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.54",
+    "@babel/core": "^7.0.0-beta.55",
+    "@babel/register": "^7.0.0-beta.55",
+    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.55",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.55",
     "rollup": "^0.63.4",
     "rollup-plugin-babel": "^4.0.0-beta.7",
-    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "optionalDependencies": {

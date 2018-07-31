@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/winston2#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/core": "^7.0.0-beta.55",
+    "@babel/preset-env": "^7.0.0-beta.55",
     "rollup": "^0.63.4",
     "rollup-plugin-babel": "^4.0.0-beta.7",
     "winston": "^2.4.3",
