@@ -1,5 +1,7 @@
 'use strict';
 
+const babel = require('rollup-plugin-babel');
+
 module.exports = [{
   input: './index.js',
   output: {
@@ -11,7 +13,18 @@ module.exports = [{
     'dlv',
     'dset',
     'deepmerge'
-  ]
+  ],
+  plugins: [
+    babel({
+      presets: [
+        ["@babel/preset-env", {
+          "targets": {
+            "node": "6"
+          },
+        }],
+      ],
+    }),
+  ],
 }, {
   input: './plugins/stacktrace.js',
   output: {
