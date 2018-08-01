@@ -1,0 +1,37 @@
+{
+  "name": "koa-logtown",
+  "version": "1.0.3",
+  "description": "Logging middleware for koa with logtown underneath",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zemd/koa-logtown"
+  },
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zemd/koa-logtown/issues"
+  },
+  "homepage": "https://github.com/zemd/koa-logtown",
+  "keywords": [
+    "koa",
+    "koa2",
+    "middleware",
+    "logger",
+    "log",
+    "logtown"
+  ],
+  "dependencies": {
+    "bytes": "^3.0.0",
+    "chalk": "^2.4.1",
+    "humanize-number": "^0.0.2",
+    "on-finished": "^2.3.0",
+    "passthrough-counter": "^1.0.0"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "koa": "*"
+  }
+}

@@ -7,8 +7,8 @@ const commonjs = require('rollup-plugin-commonjs');
 module.exports = [{
   input: './index.js',
   external: [],
-  name: 'logtown',
   output: {
+    name: 'logtown',
     file: './es5/umd/index.js',
     format: 'umd',
     interop: false,
@@ -22,17 +22,19 @@ module.exports = [{
     commonjs(),
     babel({
       presets: [
-        ['es2015', { modules: false }],
-      ],
-      plugins: [
-        'external-helpers',
+        ["@babel/preset-env", {
+          "targets": {
+            "browsers": ["last 2 versions", "safari >= 7"]
+          },
+          "modules": false
+        }],
       ],
     }),
   ],
 }, {
   input: './plugins/stacktrace.js',
-  name: 'logtown',
   output: {
+    name: 'logtown',
     file: './es5/umd/plugins/stacktrace.js',
     format: 'umd',
     interop: false,
@@ -46,10 +48,12 @@ module.exports = [{
     commonjs(),
     babel({
       presets: [
-        ['es2015', { modules: false }],
-      ],
-      plugins: [
-        'external-helpers',
+        ["@babel/preset-env", {
+          "targets": {
+            "browsers": ["last 2 versions", "safari >= 7"]
+          },
+          "modules": false
+        }],
       ],
     }),
   ],

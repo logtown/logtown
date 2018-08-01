@@ -1,12 +1,15 @@
 'use strict';
 
 import test from 'ava';
+import Logger from '../';
+import stacktrace from '../plugins/stacktrace';
+
+test.beforeEach(() => {
+  Logger.clean();
+});
 
 test('Logger executes custom wrapper via log method and SILLY level', t => {
   t.plan(3);
-  const Logger = require('../es6/common');
-  Logger.clean();
-
   const logger = Logger.getLogger('test1', {
     wrappers: [
       {
@@ -25,9 +28,6 @@ test('Logger executes custom wrapper via log method and SILLY level', t => {
 test('Logger executes global wrapper via log method and DEBUG level', t => {
   t.plan(3);
 
-  const Logger = require('../es6/common');
-  Logger.clean();
-
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -41,9 +41,6 @@ test('Logger executes global wrapper via log method and DEBUG level', t => {
 });
 
 test('Logger will not execute disabled WARN level', t => {
-  const Logger = require('../es6/common');
-  Logger.clean();
-
   const logger = Logger.getLogger('test3');
 
   Logger.configure({
@@ -66,9 +63,6 @@ test('Logger will not execute disabled WARN level', t => {
 test('Testing logger factory method to fetch it', t => {
   t.plan(3);
 
-  const Logger = require('../es6/common');
-  Logger.clean();
-
   Logger.addWrapper({
     log(id, level, stats, ...rest) {
       t.is(id, 'test2');
@@ -83,9 +77,6 @@ test('Testing logger factory method to fetch it', t => {
 
 test('Add wrapper as function', t => {
   t.plan(6);
-
-  const Logger = require('../es6/common');
-  Logger.clean();
 
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(id, 'test3');
@@ -103,44 +94,13 @@ test('Add wrapper as function', t => {
   logger.debug('message');
 });
 
-test('Add plugin function', t => {
-
-  const Logger = require('../es6/common');
-  Logger.clean();
-
-  const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
-  const stackReg2 = /at\s+()(.*):(\d*):(\d*)/i;
-
-  const filelinePlugin = function (id, level, stats, ...rest) {
-    let newStats = JSON.parse(JSON.stringify(stats)); // quick deep cloning
-    let newRest = rest.slice();
-
-    let err = rest.find((obj) => obj instanceof Error);
-
-    let stacklist = (err || new Error()).stack.split('\n').slice(1);
-    let s = stacklist[0];
-    let sp = stackReg.exec(s) || stackReg2.exec(s);
-
-    if (sp && sp.length === 5) {
-      newStats.method = sp[1];
-      newStats.path = sp[2];
-      newStats.line = parseInt(sp[3], 10);
-      newStats.pos = sp[4];
-      newStats.file = newStats.path.split(/[\\/]/).pop();
-
-      newRest.splice(0, 0, `(${newStats.path}:${newStats.line})`);
-    }
-
-    return [id, level, newStats, ...newRest];
-  };
-
-  Logger.addPlugin(filelinePlugin);
-
+test.serial('Add plugin function', t => {
+  Logger.addPlugin(stacktrace());
   let logger = Logger.getLogger('testing-plugin');
 
   Logger.addWrapper({
     error: function (id, stats, ...rest) {
-      t.is(stats.line, 148);
+      t.is(stats.line, 108);
       t.is(stats.file, 'index.js');
     },
   });
@@ -150,11 +110,8 @@ test('Add plugin function', t => {
   t.pass();
 });
 
-test('Use tags to disable multiple loggers', t => {
+test.serial('Use tags to disable multiple loggers', t => {
   t.plan(3);
-
-  const Logger = require('../es6/common');
-  Logger.clean();
 
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(id, 'namespace3');
@@ -177,9 +134,7 @@ test('Use tags to disable multiple loggers', t => {
   l3.debug('Acceptable logger');
 });
 
-test('Can log circular structures', t => {
-  const Logger = require('../es6/common');
-  Logger.clean();
+test.serial('Can log circular structures', t => {
   Logger.addWrapper(function (id, level, stats, ...rest) {
     t.is(rest[0], circular);
   });
