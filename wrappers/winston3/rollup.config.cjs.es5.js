@@ -7,17 +7,17 @@ export default {
   output: {
     file: './es5/index.js',
     format: 'cjs',
-    interop: false,
+    interop: false
   },
   external: [
-    'winston',
+    'winston'
   ],
   plugins: [
     babel({
       presets: [
         ['@babel/preset-env', {
           'targets': {
-            'browsers': ['last 2 versions', 'safari >= 7']
+            'node': '5'
           },
           'modules': false
         }]
