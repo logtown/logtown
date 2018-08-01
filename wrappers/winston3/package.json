@@ -2,7 +2,8 @@
   "name": "logtown-winston3",
   "version": "1.0.0",
   "description": "Logtown wrapper for winston logger",
-  "main": "index.js",
+  "module": "index.js",
+  "main": "./es5/index.js",
   "scripts": {
     "test": "tape test/**/*.js",
     "es5": "rollup --config rollup.config.cjs.es5.js",
