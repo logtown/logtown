@@ -17,7 +17,7 @@ export default {
       presets: [
         ['@babel/preset-env', {
           'targets': {
-            'node': '5'
+            'node': '6'
           },
           'modules': false
         }]
