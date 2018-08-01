@@ -6,6 +6,7 @@ export default {
     interop: false
   },
   external: [
-    'raven-js'
+    'raven-js',
+    'raven-js/src/singleton'
   ]
 };

@@ -17,7 +17,7 @@ export default {
       presets: [
         ['@babel/preset-env', {
           'targets': {
-            'browsers': ['last 2 versions', 'safari >= 7']
+            'node': '5'
           },
           'modules': false
         }]

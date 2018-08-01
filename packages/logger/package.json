@@ -39,7 +39,7 @@
     "@babel/preset-env": "^7.0.0-beta.55",
     "@babel/plugin-external-helpers": "^7.0.0-beta.55",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.55",
-    "rollup": "^0.63.4",
+    "rollup": "^0.63.5",
     "rollup-plugin-babel": "^4.0.0-beta.7",
     "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0"
@@ -62,11 +62,16 @@
     "env": {
       "test": {
         "presets": [
-          ["@babel/preset-env", {
-            "targets": {
-              "browsers": ["last 2 Chrome versions"]
+          [
+            "@babel/preset-env",
+            {
+              "targets": {
+                "browsers": [
+                  "last 2 Chrome versions"
+                ]
+              }
             }
-          }]
+          ]
         ]
       }
     }

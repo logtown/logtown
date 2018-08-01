@@ -29,15 +29,12 @@ module.exports = [{
           "modules": false
         }],
       ],
-      plugins: [
-        '@babel/plugin-external-helpers',
-      ],
     }),
   ],
 }, {
   input: './plugins/stacktrace.js',
-  name: 'logtown',
   output: {
+    name: 'logtown',
     file: './es5/umd/plugins/stacktrace.js',
     format: 'umd',
     interop: false,
@@ -57,9 +54,6 @@ module.exports = [{
           },
           "modules": false
         }],
-      ],
-      plugins: [
-        '@babel/plugin-external-helpers',
       ],
     }),
   ],

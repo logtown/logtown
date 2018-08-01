@@ -1,8 +1,6 @@
 'use strict';
 
 const babel = require('rollup-plugin-babel');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
 
 module.exports = [{
   input: './index.js',
@@ -17,25 +15,20 @@ module.exports = [{
     'deepmerge'
   ],
   plugins: [
-    nodeResolve({
-      module: true,
-      jsnext: true,
-      main: true,
-    }),
-    commonjs(),
     babel({
       presets: [
-        ["@babel/preset-env", {
-          "targets": {
-            "node": "6"
+        ['@babel/preset-env', {
+          'targets': {
+            'node': '6'
           },
-        }],
+          'modules': false
+        }]
       ],
       plugins: [
-        '@babel/plugin-external-helpers',
-      ],
-    }),
-  ],
+        // '@babel/plugin-proposal-object-rest-spread'
+      ]
+    })
+  ]
 }, {
   input: './plugins/stacktrace.js',
   output: {

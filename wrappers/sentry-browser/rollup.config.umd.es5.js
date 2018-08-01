@@ -10,11 +10,12 @@ module.exports = {
     file: './es5/umd/index.js',
     format: 'umd',
     interop: false,
+    name: 'logtown-sentry-browser',
   },
   external: [
-    'raven-js'
+    'raven-js',
+    'raven-js/src/singleton',
   ],
-  name: 'logtown-sentry-browser',
   plugins: [
     nodeResolve({
       module: true,
@@ -30,9 +31,6 @@ module.exports = {
           },
           "modules": false
         }],
-      ],
-      plugins: [
-        '@babel/plugin-external-helpers',
       ],
     }),
   ]
