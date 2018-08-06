@@ -40,5 +40,7 @@
     "logtown": "*",
     "winston": "^3.0.0"
   },
-  "gitHead": "2c71045f565a746bb3dd254cc9ba73a31863d402"
+  "publishConfig": {
+    "access": "public"
+  }
 }
