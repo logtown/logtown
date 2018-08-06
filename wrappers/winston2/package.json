@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "logtown": "*",
-    "winston": "^2.4.3"
+    "winston": "2"
   },
   "publishConfig": {
     "access": "public"
