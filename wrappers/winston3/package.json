@@ -27,14 +27,14 @@
   },
   "homepage": "https://github.com/logtown/logtown-winston#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/core": "7.0.0-beta.56",
+    "@babel/preset-env": "7.0.0-beta.56",
     "logtown": "^2.2.0",
-    "rollup": "^0.63.4",
-    "rollup-plugin-babel": "^4.0.0-beta.7",
-    "std-mocks": "^1.0.1",
-    "tape": "^4.9.1",
-    "winston": "^3.0.0"
+    "rollup": "0.63.5",
+    "rollup-plugin-babel": "4.0.0-beta.8",
+    "std-mocks": "1.0.1",
+    "tape": "4.9.1",
+    "winston": "3.0.0"
   },
   "peerDependencies": {
     "logtown": "*",
