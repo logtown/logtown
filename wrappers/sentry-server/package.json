@@ -1,6 +1,6 @@
 {
   "name": "logtown-sentry-server",
-  "version": "1.0.1",
+  "version": "2.2.0",
   "description": "Logtown wrapper for sentry logger on server side",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "rollup-plugin-babel": "^4.0.0-beta.7"
   },
   "peerDependencies": {
-    "raven": "^2.6.3",
-    "logtown": "*"
+    "logtown": "*",
+    "raven": "^2.6.3"
   }
 }

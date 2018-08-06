@@ -1,10 +1,9 @@
 {
   "name": "koa-logtown",
-  "version": "1.0.3",
+  "version": "2.2.0",
   "description": "Logging middleware for koa with logtown underneath",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/zemd/koa-logtown"
@@ -31,7 +30,7 @@
     "passthrough-counter": "^1.0.0"
   },
   "peerDependencies": {
-    "logtown": "*",
-    "koa": "*"
+    "koa": "*",
+    "logtown": "*"
   }
 }

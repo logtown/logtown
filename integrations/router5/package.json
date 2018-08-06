@@ -1,10 +1,9 @@
 {
   "name": "router5-logtown-plugin",
-  "version": "1.0.0",
+  "version": "2.2.0",
   "description": "Logtown logger plugin for router5 library",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/zemd/route5-logtown-plugin"

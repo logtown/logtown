@@ -1,6 +1,6 @@
 {
   "name": "logtown",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "Simple Logging Facade for JavaScript",
   "main": "es6/common/index.js",
   "module": "index.js",
@@ -28,17 +28,17 @@
   },
   "homepage": "https://github.com/logtown/logtown",
   "dependencies": {
+    "deepmerge": "^2.1.1",
     "dlv": "^1.1.2",
-    "dset": "^1.0.1",
-    "deepmerge": "^2.1.1"
+    "dset": "^1.0.1"
   },
   "devDependencies": {
-    "ava": "^1.0.0-beta.6",
     "@babel/core": "^7.0.0-beta.55",
-    "@babel/register": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
     "@babel/plugin-external-helpers": "^7.0.0-beta.55",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.55",
+    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/register": "^7.0.0-beta.55",
+    "ava": "^1.0.0-beta.6",
     "rollup": "^0.63.5",
     "rollup-plugin-babel": "^4.0.0-beta.7",
     "rollup-plugin-commonjs": "^9.1.4",

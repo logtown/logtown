@@ -1,9 +1,9 @@
 {
   "lerna": "3.0.0-rc.0",
   "packages": [
+    "integrations/*",
     "packages/*",
-    "wrappers/*",
-    "integrations/*"
+    "wrappers/*"
   ],
-  "version": "2.1.3"
+  "version": "2.2.0"
 }
