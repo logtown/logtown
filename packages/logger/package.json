@@ -33,16 +33,16 @@
     "dset": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.55",
-    "@babel/plugin-external-helpers": "^7.0.0-beta.55",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
-    "@babel/register": "^7.0.0-beta.55",
-    "ava": "^1.0.0-beta.6",
-    "rollup": "^0.63.5",
-    "rollup-plugin-babel": "^4.0.0-beta.7",
-    "rollup-plugin-commonjs": "^9.1.4",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "@babel/core": "7.0.0-beta.56",
+    "@babel/plugin-external-helpers": "7.0.0-beta.56",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.56",
+    "@babel/preset-env": "7.0.0-beta.56",
+    "@babel/register": "7.0.0-beta.56",
+    "ava": "1.0.0-beta.6",
+    "rollup": "0.63.5",
+    "rollup-plugin-babel": "4.0.0-beta.8",
+    "rollup-plugin-commonjs": "9.1.4",
+    "rollup-plugin-node-resolve": "3.3.0"
   },
   "optionalDependencies": {
     "pad": "^2.1.0"

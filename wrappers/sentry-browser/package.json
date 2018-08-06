@@ -28,15 +28,15 @@
   },
   "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/sentry-browser#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.55",
-    "@babel/plugin-external-helpers": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/core": "7.0.0-beta.56",
+    "@babel/plugin-external-helpers": "7.0.0-beta.56",
+    "@babel/preset-env": "7.0.0-beta.56",
     "logtown": "^2.2.0",
-    "raven-js": "^3.26.4",
-    "rollup": "^0.63.4",
-    "rollup-plugin-babel": "^4.0.0-beta.7",
-    "rollup-plugin-commonjs": "^9.1.4",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "raven-js": "3.26.4",
+    "rollup": "0.63.5",
+    "rollup-plugin-babel": "4.0.0-beta.8",
+    "rollup-plugin-commonjs": "9.1.4",
+    "rollup-plugin-node-resolve": "3.3.0"
   },
   "peerDependencies": {
     "logtown": "*",
