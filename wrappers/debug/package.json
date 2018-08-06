@@ -39,5 +39,6 @@
   "peerDependencies": {
     "debug": "^3.1.0",
     "logtown": "*"
-  }
+  },
+  "gitHead": "2c71045f565a746bb3dd254cc9ba73a31863d402"
 }
