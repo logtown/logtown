@@ -13,7 +13,7 @@ cache:
     - "node_modules"
 
 before_install:
-  - npm install -g lerna
+  - travis_wait npm install -g lerna
 
 install:
   - lerna bootstrap
