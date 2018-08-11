@@ -1,7 +1,7 @@
 {
   "name": "logtown-plugin-pretty-error",
   "version": "1.0.0",
-  "description": "Logtown plugin leveraging pretty-error",
+  "description": "Logtown plugin leveraging pretty-error library",
   "main": "index.js",
   "scripts": {
   },
@@ -16,6 +16,14 @@
     "logtown",
     "wrapper",
     "plugin",
+    "pretty",
+    "error",
+    "error-handling",
+    "readable",
+    "colorful",
+    "prettify",
+    "format",
+    "human",
     "pretty error"
   ],
   "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
