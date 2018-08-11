@@ -1,18 +1,17 @@
 # Logtown
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/logtown/logtown.svg)](https://greenkeeper.io/)
-
 > Simple Logging Facade for JavaScript.
 
 [![npm version](https://badge.fury.io/js/logtown.svg)](https://www.npmjs.com/package/logtown)
+[![Build Status](https://travis-ci.org/logtown/logtown.svg?branch=master)](https://travis-ci.org/logtown/logtown)
 [![Known Vulnerabilities](https://snyk.io/test/github/logtown/logtown/badge.svg)](https://snyk.io/test/github/logtown/logtown)
 [![Package Quality](http://npm.packagequality.com/shield/logtown.svg)](http://packagequality.com/#?package=logtown)
-[![Build Status](https://travis-ci.org/logtown/logtown.svg?branch=master)](https://travis-ci.org/logtown/logtown)
 [![Code Climate](https://codeclimate.com/github/logtown/logtown/badges/gpa.svg)](https://codeclimate.com/github/logtown/logtown)
-[![CircleCI](https://circleci.com/gh/logtown/logtown/tree/master.svg?style=svg)](https://circleci.com/gh/logtown/logtown/tree/master)
+[![Greenkeeper badge](https://badges.greenkeeper.io/logtown/logtown.svg)](https://greenkeeper.io/)
+
+
 [![dependencies:?](https://img.shields.io/david/logtown/logtown.svg)](https://david-dm.org/logtown/logtown)
 [![devDependencies:?](https://img.shields.io/david/dev/logtown/logtown.svg?style=flat)](https://david-dm.org/logtown/logtown)
-[![Inline docs](http://inch-ci.org/github/logtown/logtown.svg?branch=master)](http://inch-ci.org/github/logtown/logtown)
 
 ## Installation
 
@@ -30,8 +29,8 @@ yarn add logtown
 
 First of all you should notice, that `logtown` is not a *logger*. You can use any logger you want underneath, there are a 
 lot of great tools like intel, winston and others.
-And if you don't define any wrappers you won't see any output. There are 2 ready for use wrappers contained in the 
-package. But you can use your own in any time.
+And if you don't define any wrappers to use you won't see any output. There are 2 ready for use wrappers contained in the 
+package as an example, but you can use your own in any time.
 
 So let's start from simple use case:
 ```javascript
@@ -62,11 +61,11 @@ logger.error('Error message');
 ### Using in es5 environment
 
 There are several precompiled versions of this module placed in folders `es5` and `es6`. You might select the one you
-needed by importing `require('logtown/es5/common')` for old commonjs environments.
+need by importing `require('logtown/es5/common')` for old commonjs environments.
  
 ### Adding new wrapper
 
-Adding wrapper as you noticed before in the example, pretty simple operation. You required to implement at least one 
+Adding wrapper as you noticed before in the example, is pretty simple operation. As it was notices you need to implement at least one 
 method or pass single `function` that will work like the most advanced wrapper's function `log`.
 
 Example,
@@ -109,12 +108,12 @@ Logger.addWrapper(new AdvancedWrapper({option1: "value"}));
 
 Logtown can be configured in 3 ways: 
  
- * by defining application level configurations
- * by defining logger level configurations
- * and by defining global level configurations
+ * by defining **application level** configurations
+ * by defining **logger level** configurations
+ * and by defining **global level** configurations
 
 
- 1. Application level is made by using `Logger.configure({})` static method.
+ 1. **Application level** can be used by passing configuration object into `Logger.configure({})` static method.
 
     ```javascript
     const logger = Logger.configure({
@@ -151,7 +150,7 @@ const Logger = require('logtown');
 Logger.configure(config('logtown', {}))
 ```
 
-## Experimental feature
+## Experimental features
 
 By default you are limited with defined method set. It gives possibility to rely on logger api anytime and be ready to
 swap out it when needed. But sometimes you would need to use your logger's very specific functionality. For example,
@@ -188,10 +187,27 @@ would be to switch to [tracer](https://github.com/baryon/tracer), or just add ri
 const Logger = require('logtown');
 
 const pluginFactoryFn = require('logtown/es6/common/plugins/stacktrace');
-Logger.addPlugin(pluginFactoryFn({prependRest: true}));
+Logger.addPlugin(pluginFactoryFn({ prependRest: true }));
 ```
 
 And that's it, now debug stats are available in all your wrappers. 
+
+
+### Creating new plugin
+
+Plugin is a simple function, that receives mutable `context` object. You can modify only 2 fields in it: `context.stats` and
+`context.args`. These are the values that will be passing to wrappers. Also there are some additional getters: `context.id`, `context.level` and 
+`context.arguments`. The last is an array with initial arguments passed. It is can be useful when one your plugins has changed
+type or value of argument but you are required to know about it's initial value or type.
+
+```js
+function plugin(ctx) {
+  if (ctx.level === 'ERROR' && ctx.args[0] instanceof Error) {
+    ctx.args[0] = prettyPrint(ctx.args[0]);
+  }
+}
+logtown.addPlugin(plugin);
+```
 
 ## Tags
 

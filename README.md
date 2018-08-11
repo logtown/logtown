@@ -187,10 +187,27 @@ would be to switch to [tracer](https://github.com/baryon/tracer), or just add ri
 const Logger = require('logtown');
 
 const pluginFactoryFn = require('logtown/es6/common/plugins/stacktrace');
-Logger.addPlugin(pluginFactoryFn({prependRest: true}));
+Logger.addPlugin(pluginFactoryFn({ prependRest: true }));
 ```
 
 And that's it, now debug stats are available in all your wrappers. 
+
+
+### Creating new plugin
+
+Plugin is a simple function, that receives mutable `context` object. You can modify only 2 fields in it: `context.stats` and
+`context.args`. These are the values that will be passing to wrappers. Also there are some additional getters: `context.id`, `context.level` and 
+`context.arguments`. The last is an array with initial arguments passed. It is can be useful when one your plugins has changed
+type or value of argument but you are required to know about it's initial value or type.
+
+```js
+function plugin(ctx) {
+  if (ctx.level === 'ERROR' && ctx.args[0] instanceof Error) {
+    ctx.args[0] = prettyPrint(ctx.args[0]);
+  }
+}
+logtown.addPlugin(plugin);
+```
 
 ## Tags
 
