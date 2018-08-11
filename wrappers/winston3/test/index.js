@@ -4,14 +4,12 @@ const logtown = require('logtown');
 const test = require('tape');
 const winston = require('winston');
 
-logtown.addWrapper(new WinstonWrapper({
-  transports: [
-    new winston.transports.Console({
-      handleExceptions: true,
-      format: winston.format.json()
-    })
-  ]
-}));
+logtown.addWrapper(new WinstonWrapper([
+  new winston.transports.Console({
+    handleExceptions: true,
+    format: winston.format.json()
+  })
+]));
 const logger = logtown('winston-test');
 
 function flush(ind = 0) {
