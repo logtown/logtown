@@ -1,0 +1,39 @@
+{
+  "name": "logtown-plugin-pretty-error",
+  "version": "1.0.0",
+  "description": "Logtown plugin leveraging pretty-error",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "winston",
+    "logtown",
+    "wrapper",
+    "plugin",
+    "pretty error"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/pluggins/pretty-error#readme",
+  "devDependencies": {
+    "logtown": "^2.2.0",
+    "logtown-winston3": "^2.2.0",
+    "pretty-error": "^2.1.1"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "pretty-error": "^2.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

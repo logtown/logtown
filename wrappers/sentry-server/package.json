@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/logtown/logtown-sentry-server#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.55",
-    "@babel/plugin-external-helpers": "^7.0.0-beta.55",
-    "@babel/preset-env": "^7.0.0-beta.55",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/plugin-external-helpers": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
     "rollup": "^0.64.1",
-    "rollup-plugin-babel": "^4.0.0-beta.7"
+    "rollup-plugin-babel": "^4.0.0-beta.8"
   },
   "peerDependencies": {
     "logtown": "*",

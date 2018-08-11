@@ -5,7 +5,8 @@ const util = require('util');
 
 const DEFAULT_TRANSPORTS = [
   new winston.transports.Console({
-    handleExceptions: true
+    handleExceptions: true,
+    format: winston.format.simple()
   })
 ];
 

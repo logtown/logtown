@@ -113,21 +113,25 @@ function calcStats() {
  * @return {[]}
  */
 function applyPlugins(id, level, stats, ...rest) {
-  const logArgs = plugins.reduce((acc, pluginFn) => {
-    if (!Array.isArray(acc)) {
-      console.error('Plugin must return an array', acc);
-      throw new Error('Plugin must return array');
-    }
-    if (acc.length === 0) {
-      console.warn(`Possible error. One of the plugins has returned an empty array.`);
-    }
-    return pluginFn(...acc);
-  }, [id, level, stats, ...rest]);
+  const args = Object.freeze(rest.map((arg) => Object.freeze(arg)));
+  // mutable context object that passes into plugin function and
+  // should be modified with new args or stats
+  // id, level and initial arguments array MUST not be modified
+  // console.error("rest", rest);
+  // console.error("cloneFast(rest)", cloneFast(rest));
+  const ctx = {
+    get id() { return id },
+    get level() { return level },
+    get arguments() { return args },
+    stats,
+    args: rest,
+  };
 
-  if (logArgs.length === 0) {
-    return [id, level, stats, ...rest];
-  }
-  return logArgs;
+  plugins.forEach((pluginFn) => {
+    pluginFn(ctx);
+  });
+  const resArgs = Array.isArray(ctx.args) && ctx.args.length ? ctx.args : ctx.arguments;
+  return [id, level, ctx.stats, ...resArgs];
 }
 
 /**

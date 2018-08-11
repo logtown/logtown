@@ -3,6 +3,7 @@
   "packages": [
     "integrations/*",
     "packages/*",
+    "plugins/*",
     "wrappers/*"
   ],
   "version": "2.2.0"

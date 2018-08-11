@@ -5,10 +5,10 @@
 const stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/i;
 const stackReg2 = /at\s+()(.*):(\d*):(\d*)/i;
 
-export default ({prependRest = true}={}) => {
-  return (id, level, stats, ...rest) => {
-    let newStats = JSON.parse(JSON.stringify(stats)); // quick deep cloning
-    let newRest = rest.slice();
+export default ({ prependRest = true } = {}) => {
+  return (ctx) => {
+    let newStats = JSON.parse(JSON.stringify(ctx.stats)); // quick deep cloning
+    let newRest = ctx.args.slice();
 
     let err = rest.find((obj) => obj instanceof Error);
 
@@ -27,7 +27,7 @@ export default ({prependRest = true}={}) => {
         newRest.splice(0, 0, `(${newStats.path}:${newStats.line})`);
       }
     }
-
-    return [id, level, newStats, ...newRest];
+    ctx.stats = newStats;
+    ctx.args = newRest;
   }
 }
