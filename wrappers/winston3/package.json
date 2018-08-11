@@ -1,6 +1,6 @@
 {
   "name": "logtown-winston3",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Logtown wrapper for winston logger",
   "module": "index.js",
   "main": "./es5/index.js",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-rc.1",
     "@babel/preset-env": "^7.0.0-rc.1",
-    "logtown": "^2.2.0",
+    "logtown": "^2.3.0",
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^4.0.0-beta.8",
     "std-mocks": "^1.0.1",
