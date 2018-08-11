@@ -1,0 +1,42 @@
+{
+  "name": "logtown-plugin-dumper-js",
+  "version": "2.3.1",
+  "description": "Logtown plugin leveraging dumper.js library",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "winston",
+    "logtown",
+    "wrapper",
+    "plugin",
+    "dd",
+    "dumper",
+    "dump",
+    "debug",
+    "console"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/pluggins/pretty-error#readme",
+  "devDependencies": {
+    "logtown": "^2.3.1",
+    "logtown-winston3": "^2.3.1",
+    "dumper.js": "^0.1.1"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "dumper.js": "^0.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

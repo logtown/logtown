@@ -33,7 +33,7 @@ For reference of pretty-error usage see [pretty-error docs](https://github.com/A
 
 ## License
 
-Logtown-winston is released under the MIT license.
+logtown-plugin-pretty-error is released under the MIT license.
 
 ## Donate
 
