@@ -1,9 +1,10 @@
 const stdMocks = require('std-mocks');
-const Winston = require('../');
+const WinstonWrapper = require('../');
 const logtown = require('logtown');
 const test = require('tape');
+const winston = require('winston');
 
-logtown.addWrapper(new Winston({
+logtown.addWrapper(new WinstonWrapper({
   transports: [
     new winston.transports.Console({
       handleExceptions: true,
