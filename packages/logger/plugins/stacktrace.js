@@ -10,7 +10,7 @@ export default ({ prependRest = true } = {}) => {
     let newStats = JSON.parse(JSON.stringify(ctx.stats)); // quick deep cloning
     let newRest = ctx.args.slice();
 
-    let err = rest.find((obj) => obj instanceof Error);
+    let err = ctx.args.find((obj) => obj instanceof Error);
 
     let stacklist = (err || new Error()).stack.split('\n').slice(1);
     let s = stacklist[0];
