@@ -1,0 +1,38 @@
+{
+  "name": "logtown-logdna-server",
+  "version": "1.0.0",
+  "description": "Logtown wrapper for logdna",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "logs",
+    "logtown",
+    "wrapper",
+    "logdna.com",
+    "logdna"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/logdna#readme",
+  "devDependencies": {
+    "logtown": "^2.3.1",
+    "logdna": "^2.0.4"
+  },
+  "peerDependencies": {
+    "logdna": "*",
+    "logtown": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "logtown-loggly-server",
+  "version": "1.0.0",
+  "description": "Logtown wrapper for loggly",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/logtown/logtown.git"
+  },
+  "keywords": [
+    "Logtown",
+    "logger",
+    "logs",
+    "logtown",
+    "wrapper",
+    "loggly-jslogger",
+    "loggly"
+  ],
+  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/logdna#readme",
+  "devDependencies": {
+    "logtown": "^2.3.1",
+    "loggly": "^1.1.1"
+  },
+  "peerDependencies": {
+    "loggly": "*",
+    "logtown": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

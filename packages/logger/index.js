@@ -7,29 +7,11 @@ import deepmerge from 'deepmerge';
 const loggers = Object.create(null);
 let configRegistry = Object.create(null);
 const wrappers = [];
-const plugins = [];
+const pluginsRegistry = [];
 const LEVELS = Object.freeze({ SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR' });
-
-/**
- * Support objects with circular references, when sending it to wrappers
- *
- * [PR #21](https://github.com/logtown/logtown/pull/21)
- *
- * @param obj
- * @return {*}
- */
-function cloneFast(obj) {
-  const cache = [];
-  return JSON.parse(JSON.stringify(obj, function (key, value) {
-    if (typeof value === 'object' && value !== null) {
-      if (cache.indexOf(value) !== -1) {
-        return '[Circular]';
-      }
-      cache.push(value);
-    }
-    return value;
-  }));
-}
+const WRAPPER_OPTS_SYMBOL = Symbol();
+const WRAPPER_OPTS_KEY = 'logOptions';
+const WRAPPER_PLUGINS_KEY = 'logPlugins';
 
 function buildMessageOptions(id) {
   const { namespaces, disable, ...confs } = configRegistry;
@@ -42,6 +24,14 @@ function buildMessageOptions(id) {
   ]);
   options.disable = options.disable.map(d => d.toUpperCase());
   return options;
+}
+
+function equalsWrapperOptValue(wrapper, opt, value) {
+  return get(wrapper, ['constructor', WRAPPER_OPTS_KEY, opt]) === value || get(wrapper, [WRAPPER_OPTS_SYMBOL, opt]) === value;
+}
+
+function extractWrapperPlugins(wrapper) {
+  return get(wrapper, ['constructor', WRAPPER_PLUGINS_KEY]) || get(wrapper, [WRAPPER_OPTS_SYMBOL, 'plugins']);
 }
 
 /**
@@ -70,20 +60,20 @@ function sendMessage(id, level, fallbackToLog, ...rest) {
     return;
   }
 
-  let stats = calcStats();
-  let logArgs = applyPlugins(id, level, stats, ...rest);
-
-  let logArgsWithoutLevel = cloneFast(logArgs);
-  logArgsWithoutLevel.splice(1, 1); // removing level from args list
+  const [, , stats, ...args] = applyPlugins(pluginsRegistry, id, level, calcStats(), ...rest);
 
   wrappers.concat(options.wrappers)
     .forEach((wrapper) => {
+      const restOrArgs = equalsWrapperOptValue(wrapper, 'passInitialArguments', true) ? rest : args;
+      const plugins = extractWrapperPlugins(wrapper);
+      const [, , wrapperStats, ...wrapperArgs] = applyPlugins(plugins, id, level, stats, ...restOrArgs);
+
       if (typeof wrapper[levelMethod] === 'function') {
         // use specific logging method if exists, for example, wrapper.info()
-        return wrapper[levelMethod](...logArgsWithoutLevel);
+        return wrapper[levelMethod](id, wrapperStats, ...wrapperArgs);
       } else if (typeof wrapper.log === 'function' && !!fallbackToLog) {
         // use generic log method, if fallbackToLog === true. It is always equal to TRUE for standard levels
-        return wrapper.log(...logArgs);
+        return wrapper.log(id, level, wrapperStats, ...wrapperArgs);
       }
       if (!!configRegistry.verbose) {
         console.log(`Wrapper has no valid logging method. fallbackToLog is equal ${fallbackToLog}. skipping...`);
@@ -106,25 +96,33 @@ function calcStats() {
 /**
  * Run all plugins. Must return always non empty array with [id, level, stats, ...rest]
  *
+ * @param {[]} plugins
  * @param {string} id
  * @param {string} level
  * @param {{}} stats
  * @param {*} rest
  * @return {[]}
  */
-function applyPlugins(id, level, stats, ...rest) {
+function applyPlugins(plugins = [], id, level, stats, ...rest) {
+  if (!Array.isArray(plugins) || !plugins.every((p) => typeof p === 'function')) {
+    throw new Error('Plugins MUST be an array of functions');
+  }
   const args = Object.freeze(rest.map((arg) => Object.freeze(arg)));
   // mutable context object that passes into plugin function and
   // should be modified with new args or stats
   // id, level and initial arguments array MUST not be modified
-  // console.error("rest", rest);
-  // console.error("cloneFast(rest)", cloneFast(rest));
   const ctx = {
-    get id() { return id },
-    get level() { return level },
-    get arguments() { return args },
+    get id() {
+      return id
+    },
+    get level() {
+      return level
+    },
+    get arguments() {
+      return args
+    },
     stats,
-    args: rest,
+    args: rest
   };
 
   plugins.forEach((pluginFn) => {
@@ -210,16 +208,18 @@ function getLogger(id, { disable = [], wrappers = [], tags = [] } = {}) {
  * @param {{}} namespaces
  * @param {{}} tags
  * @param {boolean} verbose
+ * @param {boolean} override
  */
-function configure({ useGlobal = true, disable = [], namespaces = {}, tags = {}, verbose = false } = {}) {
-  let config = {
-    useGlobal: !!useGlobal,
-    disable: normalizeArray(disable).map(v => v + ''),
-    namespaces,
-    tags: { disable: normalizeArray(get(tags, 'disable', [])) },
-    verbose
+function configure({ useGlobal = true, disable = [], namespaces = {}, tags = {}, verbose = false } = {}, override = false) {
+  const config = Object.create(null);
+  config.useGlobal = !!useGlobal;
+  config.disable = normalizeArray(disable).map(v => v + '');
+  config.namespaces = namespaces;
+  config.tags = {
+    disable: normalizeArray(get(tags, 'disable', []))
   };
-  configRegistry = deepmerge(configRegistry, config);
+  config.verbose = verbose;
+  configRegistry = override ? config : deepmerge(configRegistry, config);
 }
 
 /**
@@ -227,8 +227,13 @@ function configure({ useGlobal = true, disable = [], namespaces = {}, tags = {},
  * ['log', 'silly', 'debug', 'info', 'warn', 'error']
  *
  * @param {{log?: Function, silly?: Function, debug?: Function, info?: Function, warn?: Function, error?: Function}|Function} wrapper
+ * @param {{}} opts
  */
-function addWrapper(wrapper) {
+function addWrapper(wrapper, { passInitialArguments = false, plugins = [] } = {}) {
+  const opts = {
+    passInitialArguments,
+    plugins: normalizeArray(plugins)
+  };
   if (
     typeof wrapper === 'object' && !Array.isArray(wrapper)
     &&
@@ -238,11 +243,16 @@ function addWrapper(wrapper) {
     )
   ) {
     // if wrapper is instance of some class or pure object, it must include at least one method with level name
+    wrapper[WRAPPER_OPTS_SYMBOL] = opts;
     wrappers.push(wrapper);
     return;
   }
   if (typeof wrapper === 'function') {
-    wrappers.push({ log: wrapper });
+    const wrapperObject = {
+      log: wrapper,
+      [WRAPPER_OPTS_SYMBOL]: opts
+    };
+    wrappers.push(wrapperObject);
     return;
   }
   throw new Error('Wrapper did not implemented a minimum methods required');
@@ -270,16 +280,24 @@ function addPlugin(useLevel, fn) {
     };
   }
 
-  plugins.push(pluginFn);
+  pluginsRegistry.push(pluginFn);
+}
+
+function cleanPlugins() {
+  pluginsRegistry.splice(0, pluginsRegistry.length);
+}
+
+function cleanWrappers() {
+  wrappers.splice(0, wrappers.length);
 }
 
 /**
- * The method is intended to be used during testing. Should not be used.
- * @deprecated
+ * Clean wrappers, plugins and configurations
  */
-function clean() {
-  wrappers.splice(0, wrappers.length);
-  plugins.splice(0, plugins.length);
+function cleanAll() {
+  cleanWrappers();
+  cleanPlugins();
+  configure({}, true);
 }
 
 /**
@@ -299,7 +317,9 @@ factory.configure = configure;
 factory.addWrapper = addWrapper;
 factory.addPlugin = addPlugin;
 factory.LEVELS = LEVELS;
-factory.clean = clean;
+factory.cleanAll = cleanAll;
+factory.cleanWrappers = cleanWrappers;
+factory.cleanPlugins = cleanPlugins;
 
 /**
  * @type {{getLogger: ((id:String, config?:{disable, wrappers})=>{silly, debug, info, warn, error}), configure: ((config?)), addWrapper: ((wrapper?)), LEVELS: Object}}

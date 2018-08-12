@@ -29,7 +29,7 @@ yarn add logtown
 
 First of all you should notice, that `logtown` is not a *logger*. You can use any logger you want underneath, there are a 
 lot of great tools like intel, winston and others.
-And if you don't define any wrappers to use you won't see any output. There are 2 ready for use wrappers contained in the 
+And if you don't define any wrappers to use you won't see any output. There are 2 ready for use wrappers included into the 
 package as an example, but you can use your own in any time.
 
 So let's start from simple use case:
@@ -47,7 +47,7 @@ Logger.addWrapper({
 // Once you added wrapper you can use logger in any place of your app
 const logger = Logger.getLogger('mymodule-label');
 // if you prefer factory method then you can use getLogger as:
-// const logger = require('logtown')('my-namespace');
+const logger = require('logtown')('my-namespace');
 // or 
 // const logger = Logger('my-namespace');
 
@@ -65,7 +65,7 @@ need by importing `require('logtown/es5/common')` for old commonjs environments.
  
 ### Adding new wrapper
 
-Adding wrapper as you noticed before in the example, is pretty simple operation. As it was notices you need to implement at least one 
+Adding wrapper as you noticed before in the example, is pretty simple operation. As it was noticed, you need to implement at least one 
 method or pass single `function` that will work like the most advanced wrapper's function `log`.
 
 Example,
@@ -97,6 +97,11 @@ class AdvancedWrapper {
         this.supperLogger = new SupperLogger(options);
         // preparing supper logger ...
     }
+    
+    static logOptions = { // In rare cases you may need to avoid passing arguments that were modified in plugin, to tell logtown about that, you can define `logOptions` static object
+      passInitialArguments: true,
+    };
+    
     log(id, level, stats, ...rest) {
         this.supperLogger.log(...rest);
     }
@@ -151,6 +156,8 @@ Logger.configure(config('logtown', {}))
 ```
 
 ## Experimental features
+
+## Custom methods
 
 By default you are limited with defined method set. It gives possibility to rely on logger api anytime and be ready to
 swap out it when needed. But sometimes you would need to use your logger's very specific functionality. For example,
@@ -216,6 +223,10 @@ const logger = Logger.getLogger('my-namespace', {tags: ['debug', 'lib-1', 'lib-2
 
 Logger.configure({tags: { disable: ['lib-1'] }});
 ```
+
+## Wrapper options
+
+Since this feature has not been validated in production, it will stay in experimental until it will have enough testing.
 
 ## More articles
 
