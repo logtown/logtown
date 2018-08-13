@@ -1,6 +1,6 @@
 {
   "name": "logtown-plugin-dumper-js",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Logtown plugin leveraging dumper.js library",
   "main": "index.js",
   "scripts": {},
@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/logtown/logtown/tree/master/pluggins/pretty-error#readme",
   "devDependencies": {
-    "logtown": "^2.3.1",
-    "logtown-winston3": "^2.3.1",
-    "dumper.js": "^0.1.1"
+    "dumper.js": "^0.1.1",
+    "logtown": "^2.4.0",
+    "logtown-winston3": "^2.4.0"
   },
   "peerDependencies": {
-    "logtown": "*",
-    "dumper.js": "^0.1.1"
+    "dumper.js": "^0.1.1",
+    "logtown": "*"
   },
   "publishConfig": {
     "access": "public"
