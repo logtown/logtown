@@ -1,10 +1,11 @@
 'use strict';
 
 const pad = require('pad');
+const util = require('util');
 
 class Node {
-  constructor({padTitle = false} = {}) {
-    this.options = {pad: !!padTitle};
+  constructor({ padTitle = false } = {}) {
+    this.options = { pad: !!padTitle };
   }
 
   /**
@@ -37,12 +38,22 @@ class Node {
    * @param {number} maxIdLength
    * @param {[]} rest
    */
-  log(id, level, {maxIdLength = 0} = {}, ...rest) {
+  log(id, level, { maxIdLength = 0 } = {}, ...rest) {
     let method = console.log.bind(console);
     if (typeof console[level.toLowerCase()] === 'function') {
       method = console[level.toLowerCase()].bind(console);
     }
-    method(this.formatTitle(level.toUpperCase(), id, maxIdLength), ...rest);
+    method(util.format(this.formatTitle(level.toUpperCase(), id, maxIdLength), ...rest));
+  }
+
+  /**
+   * @param id
+   * @param stats
+   * @param rest
+   */
+  error(id, stats, ...rest) {
+    console.error(util.format(...rest.filter((v) => !(v instanceof Error))));
+    console.error(...rest.filter((v) => v instanceof Error));
   }
 }
 
