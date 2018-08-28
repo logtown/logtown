@@ -9,3 +9,4 @@ coverage/*
 test/*
 tmp/*
 .idea
+*.tgz
