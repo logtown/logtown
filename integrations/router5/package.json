@@ -1,6 +1,6 @@
 {
   "name": "router5-logtown-plugin",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Logtown logger plugin for router5 library",
   "main": "index.js",
   "scripts": {},

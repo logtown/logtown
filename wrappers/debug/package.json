@@ -1,6 +1,6 @@
 {
   "name": "logtown-debug",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Logtown wrapper for tj's debug tool",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "@babel/plugin-external-helpers": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "debug": "^3.1.0",
-    "logtown": "^2.4.0",
+    "logtown": "^2.4.1",
     "rollup": "^0.65.0",
     "rollup-plugin-babel": "^4.0.2",
     "std-mocks": "^1.0.1",
