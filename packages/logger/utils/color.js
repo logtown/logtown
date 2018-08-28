@@ -4,9 +4,6 @@
  * @fileoverview these are utils for browser color generation
  */
 
-
-import EmptyObject from 'ember-empty-object';
-
 const colors = [
   'lightseagreen',
   'forestgreen',
@@ -16,7 +13,7 @@ const colors = [
   'crimson'
 ];
 
-const colorMap = new EmptyObject();
+const colorMap = Object.create(null);
 let counter = 0;
 
 /**

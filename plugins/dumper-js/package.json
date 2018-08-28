@@ -28,12 +28,12 @@
   },
   "homepage": "https://github.com/logtown/logtown/tree/master/pluggins/pretty-error#readme",
   "devDependencies": {
-    "dumper.js": "^0.1.1",
+    "dumper.js": "^1.1.1",
     "logtown": "^2.4.0",
     "logtown-winston3": "^2.4.0"
   },
   "peerDependencies": {
-    "dumper.js": "^0.1.1",
+    "dumper.js": "^1.1.1",
     "logtown": "*"
   },
   "publishConfig": {
