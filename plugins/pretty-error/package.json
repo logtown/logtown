@@ -1,6 +1,6 @@
 {
   "name": "logtown-plugin-pretty-error",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Logtown plugin leveraging pretty-error library",
   "main": "index.js",
   "scripts": {},
@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/logtown/logtown/tree/master/pluggins/pretty-error#readme",
   "devDependencies": {
-    "logtown": "^2.4.2",
-    "logtown-winston3": "^2.4.2",
+    "logtown": "^2.4.3",
+    "logtown-winston3": "^2.4.3",
     "pretty-error": "^2.1.1"
   },
   "peerDependencies": {

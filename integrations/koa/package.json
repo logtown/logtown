@@ -1,6 +1,6 @@
 {
   "name": "koa-logtown",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Logging middleware for koa with logtown underneath",
   "main": "index.js",
   "scripts": {},

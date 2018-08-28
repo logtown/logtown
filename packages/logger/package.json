@@ -1,6 +1,6 @@
 {
   "name": "logtown",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Simple Logging Facade for JavaScript",
   "main": "es6/common/index.js",
   "module": "index.js",

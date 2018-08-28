@@ -1,6 +1,6 @@
 {
   "name": "logtown-logdna-server",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "description": "Logtown wrapper for logdna",
   "main": "index.js",
   "scripts": {},
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/logtown/logtown/tree/master/wrappers/logdna#readme",
   "devDependencies": {
     "logdna": "^2.0.4",
-    "logtown": "^2.4.2"
+    "logtown": "^2.4.3"
   },
   "peerDependencies": {
     "logdna": "*",
