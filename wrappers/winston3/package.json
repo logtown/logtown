@@ -34,7 +34,7 @@
     "rollup-plugin-babel": "^4.0.2",
     "std-mocks": "^1.0.1",
     "tape": "^4.9.1",
-    "winston": "^3.0.0"
+    "winston": "^3.0.1"
   },
   "peerDependencies": {
     "logtown": "*",
