@@ -30,7 +30,7 @@
   "dependencies": {
     "deepmerge": "^2.1.1",
     "dlv": "^1.1.2",
-    "dset": "^1.0.1"
+    "dset": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
