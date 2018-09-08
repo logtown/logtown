@@ -30,7 +30,7 @@
   "dependencies": {
     "deepmerge": "^2.1.1",
     "dlv": "^1.1.2",
-    "dset": "^1.0.1"
+    "dset": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -39,10 +39,10 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "ava": "^1.0.0-beta.8",
-    "rollup": "^0.65.0",
-    "rollup-plugin-babel": "^4.0.2",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "rollup-plugin-node-resolve": "^3.4.0"
   },
   "optionalDependencies": {
     "pad": "^2.2.1"
