@@ -1,6 +1,6 @@
 {
   "name": "logtown-sentry-browser",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "Logtown wrapper for sentry logger in browser",
   "main": "es6/common/index.js",
   "jsnext:main": "index.js",
@@ -31,7 +31,7 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-external-helpers": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "logtown": "^2.4.4",
+    "logtown": "^2.4.5",
     "raven-js": "^3.27.0",
     "rollup": "^0.67.0",
     "rollup-plugin-babel": "^4.0.3",

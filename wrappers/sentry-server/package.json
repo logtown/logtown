@@ -1,6 +1,6 @@
 {
   "name": "logtown-sentry-server",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "Logtown wrapper for sentry logger on server side",
   "main": "index.js",
   "scripts": {
