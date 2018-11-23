@@ -3,9 +3,14 @@
 import get from 'dlv';
 import set from 'dset';
 import deepmerge from 'deepmerge';
+import isPlainObject from 'is-plain-object';
 
-const loggers = Object.create(null);
-let configRegistry = Object.create(null);
+const deepMergeOptions = {
+  isMergeableObject: (obj) => isPlainObject(obj) || Array.isArray(obj),
+};
+
+const loggers = {};
+let configRegistry = {};
 const wrappers = [];
 const pluginsRegistry = [];
 const LEVELS = Object.freeze({ SILLY: 'SILLY', DEBUG: 'DEBUG', INFO: 'INFO', WARN: 'WARN', ERROR: 'ERROR' });
@@ -21,7 +26,7 @@ function buildMessageOptions(id) {
     { disable: get(configRegistry, 'disable', []) },
     confs,
     { disable: configRegistry.useGlobal ? get(global, `logtown.namespaces.${id}.disable`, []) : [] }
-  ]);
+  ], deepMergeOptions);
   options.disable = options.disable.map(d => d.toUpperCase());
   return options;
 }
@@ -195,7 +200,7 @@ function getLogger(id, { disable = [], wrappers = [], tags = [] } = {}) {
     tags: normalizeArray(tags)
   };
 
-  set(configRegistry, `namespaces.${id}`, deepmerge(get(configRegistry, `namespaces.${id}`, {}), config));
+  set(configRegistry, `namespaces.${id}`, deepmerge(get(configRegistry, `namespaces.${id}`, {}), config, deepMergeOptions));
 
   return loggers[id] || (loggers[id] = createLogger(id));
 }
@@ -219,7 +224,7 @@ function configure({ useGlobal = true, disable = [], namespaces = {}, tags = {},
     disable: normalizeArray(get(tags, 'disable', []))
   };
   config.verbose = verbose;
-  configRegistry = override ? config : deepmerge(configRegistry, config);
+  configRegistry = override ? config : deepmerge(configRegistry, config, deepMergeOptions);
 }
 
 /**

@@ -2,6 +2,8 @@
 
 import test from 'ava';
 import Logger from '../index';
+import NodeWrapper from '../wrappers/node';
+import sinon from 'sinon';
 
 test.beforeEach(() => {
   Logger.cleanAll();
@@ -72,3 +74,14 @@ test('Add wrapper as function', t => {
   const logger = Logger.getLogger('test3');
   logger.debug('message');
 });
+
+// test('Get logger with node wrapper in options', t => {
+//   const nodeWrapper = new NodeWrapper();
+//   sinon.spy(nodeWrapper, 'log');
+//
+//   const logger = Logger.getLogger('test4', {
+//     wrappers: [nodeWrapper]
+//   });
+//   logger.debug("Hello World");
+//   t.is(nodeWrapper.log.called, true);
+// });

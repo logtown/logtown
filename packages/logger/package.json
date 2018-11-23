@@ -28,26 +28,29 @@
   },
   "homepage": "https://github.com/logtown/logtown",
   "dependencies": {
-    "deepmerge": "^2.1.1",
+    "deepmerge": "^2.2.1",
     "dlv": "^1.1.2",
-    "dset": "^2.0.0"
+    "dset": "^2.0.1",
+    "is-plain-object": "^2.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.1.6",
     "@babel/plugin-external-helpers": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-env": "^7.1.6",
     "@babel/register": "^7.0.0",
-    "ava": "^1.0.0-beta.8",
-    "rollup": "^0.67.0",
+    "ava": "^1.0.0-rc.2",
+    "rollup": "^0.67.3",
     "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.4.0"
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "sinon": "^7.1.1"
   },
   "optionalDependencies": {
     "pad": "^2.2.1"
   },
   "ava": {
+    "verbose": true,
     "files": [
       "test/**/*.js"
     ],
