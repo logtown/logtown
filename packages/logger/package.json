@@ -31,7 +31,7 @@
     "deepmerge": "^3.0.0",
     "dlv": "^1.1.2",
     "dset": "^2.0.1",
-    "is-plain-object": "^2.0.4"
+    "is-plain-object": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
