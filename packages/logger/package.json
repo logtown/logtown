@@ -39,7 +39,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/register": "^7.0.0",
-    "ava": "^1.0.0-rc.2",
+    "ava": "^2.0.0",
     "rollup": "^1.0.0",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
