@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/logtown/logtown",
   "dependencies": {
-    "deepmerge": "^3.0.0",
+    "deepmerge": "^4.0.0",
     "dlv": "^1.1.2",
     "dset": "^2.0.1",
     "is-plain-object": "^3.0.0"
