@@ -1,6 +1,6 @@
 {
   "name": "@logtown/hono",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Hono middleware for logging using logtown",
   "type": "module",
   "license": "Apache-2.0",
@@ -34,7 +34,9 @@
     }
   },
   "module": "./dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc"
   }
