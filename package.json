@@ -1,23 +1,25 @@
 {
-  "name": "logtown",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "root",
+  "private": true,
   "scripts": {
-    "build": "lerna run build",
-    "test": "lerna run test"
+    "build": "turbo build",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "release": "bun run build && changeset publish",
+    "changeset": "changeset",
+    "test": "turbo test",
+    "prepare": "husky"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/logtown/logtown.git"
-  },
-  "author": "Dmytro Zelenetskyi <dmytro.zelenetskyi@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/logtown/logtown/issues"
-  },
-  "homepage": "https://github.com/logtown/logtown#readme",
   "devDependencies": {
-    "lerna": "^3.4.3"
-  }
+    "@changesets/cli": "^2.27.11",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "bun@1.1.34",
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -1,21 +1,30 @@
-*.csv
-*.dat
-*.iml
-*.log
-*.out
-*.pid
-*.seed
-*.sublime-*
-*.swo
-*.swp
-*.tgz
-.DS_Store
-.idea
-.project
-.strong-pm
-coverage
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
 node_modules
-npm-debug.log
-/tmp
-es5/
-es6/
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.DS_Store
+*.pem

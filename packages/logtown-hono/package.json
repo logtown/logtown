@@ -1,0 +1,41 @@
+{
+  "name": "@logtown/hono",
+  "version": "2.0.0",
+  "description": "Hono middleware for logging using logtown",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Dmytro Zelenetskyi",
+    "email": "dmytro.zelenetskyi@gmail.com",
+    "url": "https://codeandgin.co"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/main/packages/logtown-hono",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logtown/logtown.git"
+  },
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "peerDependencies": {
+    "logtown": "*",
+    "hono": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "logtown": "workspace:*",
+    "hono": "^4.6.14",
+    "typescript": "^5.7.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "module": "./dist/index.js",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc"
+  }
+}

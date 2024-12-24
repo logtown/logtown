@@ -1,0 +1,41 @@
+{
+  "name": "logtown",
+  "version": "2.0.0",
+  "description": "Versatile log wrapper for javascript projects",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Dmytro Zelenetskyi",
+    "email": "dmytro.zelenetskyi@gmail.com",
+    "url": "https://codeandgin.co"
+  },
+  "homepage": "https://github.com/logtown/logtown/tree/main",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logtown/logtown.git"
+  },
+  "bugs": {
+    "url": "https://github.com/logtown/logtown/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "fast-printf": "^1.6.10"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "module": "./dist/index.js",
+  "files": ["dist"],
+  "scripts": {
+    "test": "vitest --run",
+    "coverage": "vitest run --coverage",
+    "build": "tsc --project tsconfig.build.json"
+  }
+}
