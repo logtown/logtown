@@ -50,7 +50,7 @@ export type LogRule =
 
 type ModuleLogLevelStatus = "disabled" | "enabled";
 export const LOGTOWN_RULES_SYMBOL = Symbol.for("logtown_rules");
-export type LogRuleStorage = Record<string, Record<LogLevel | "*", ModuleLogLevelStatus>>;
+export type LogRuleStorage = Map<string, Map<LogLevel | "*", ModuleLogLevelStatus>>;
 
 declare global {
   interface Global {
@@ -65,7 +65,7 @@ export type WrapperLoggerObj = Partial<Record<WrapperLoggerFnName, WrapperLogger
 const WRAPPERS: WrapperLoggerObj[] = [];
 const LOGGERS = new Map<string, Logger>();
 
-(globalThis as any)[LOGTOWN_RULES_SYMBOL] = (globalThis as any)[LOGTOWN_RULES_SYMBOL] ?? {};
+(globalThis as any)[LOGTOWN_RULES_SYMBOL] = (globalThis as any)[LOGTOWN_RULES_SYMBOL] ?? new Map();
 
 class Logger implements ILogger {
   constructor(public readonly id: string) {}
@@ -228,31 +228,26 @@ export const disableOutput = (rules: LogRule[]) => {
 
 export default createLogger;
 
-const invalidKeys = ["__proto__", "constructor", "prototype"];
 function addRule(rule: LogRule): void {
   const [id, level] = rule.split(".") as [string, LogLevel | "*"];
   const pureId = id.replace("!", "").toLowerCase();
 
-  if (invalidKeys.includes(pureId.toLowerCase()) || invalidKeys.includes(level.toLowerCase())) {
-    throw new Error("Invalid logger id or level value provided.");
-  }
-
-  if (!((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[pureId]) {
+  if (!((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(pureId)) {
     // @ts-ignore
-    ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[pureId] = {};
+    ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).set(pureId, new Map());
   }
 
-  ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[pureId][level] = rule.startsWith("!")
-    ? "enabled"
-    : "disabled";
+  ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)
+    .get(pureId)
+    ?.set(level, rule.startsWith("!") ? "enabled" : "disabled");
 }
 
 function getStatus(id: string, level: LogLevel): ModuleLogLevelStatus {
   const safeId = id.toLowerCase();
-  const moduleLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[safeId]?.[level];
-  const moduleWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[safeId]?.["*"];
-  const globalLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)["*"]?.[level];
-  const globalWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)["*"]?.["*"];
+  const moduleLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(safeId)?.get(level);
+  const moduleWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(safeId)?.get("*");
+  const globalLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get("*")?.get(level);
+  const globalWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get("*")?.get("*");
 
   return globalLevelRule ?? globalWildcardRule ?? moduleLevelRule ?? moduleWildcardRule ?? "enabled";
 }

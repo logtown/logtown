@@ -12,7 +12,7 @@ import {
 describe("logtown", () => {
   beforeEach(() => {
     // Reset the global rules before each test
-    (globalThis as any)[LOGTOWN_RULES_SYMBOL] = {};
+    (globalThis as any)[LOGTOWN_RULES_SYMBOL] = new Map();
   });
 
   describe("createLogger", () => {
@@ -189,6 +189,24 @@ describe("logtown", () => {
       expect(mockWrapper).toHaveBeenCalledWith(
         expect.objectContaining({
           level: "INFO",
+        }),
+      );
+    });
+
+    test("handles global level rules", () => {
+      const mockWrapper = vi.fn();
+      registerWrapper(mockWrapper);
+
+      disableOutput(["*.INFO"]);
+      const testLogger = createLogger("test-module");
+
+      testLogger.info("This should not be logged");
+      testLogger.debug("This should be logged");
+
+      expect(mockWrapper).toHaveBeenCalledTimes(1);
+      expect(mockWrapper).toHaveBeenCalledWith(
+        expect.objectContaining({
+          level: "DEBUG",
         }),
       );
     });
