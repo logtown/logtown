@@ -2,6 +2,13 @@
   "name": "@logtown/hono",
   "version": "3.0.0",
   "description": "Hono middleware for logging using logtown",
+  "keywords": [
+    "logging",
+    "hono",
+    "middleware",
+    "apache",
+    "logtown"
+  ],
   "type": "module",
   "license": "Apache-2.0",
   "author": {
