@@ -228,7 +228,6 @@ export const disableOutput = (rules: LogRule[]) => {
 
 export default createLogger;
 
-const invalidKeys = ["__proto__", "constructor", "prototype"];
 function addRule(rule: LogRule): void {
   const [id, level] = rule.split(".") as [string, LogLevel | "*"];
   const pureId = id.replace("!", "").toLowerCase();
