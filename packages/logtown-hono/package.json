@@ -46,5 +46,8 @@
   ],
   "scripts": {
     "build": "tsc"
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }

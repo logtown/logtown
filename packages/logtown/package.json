@@ -48,5 +48,8 @@
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "build": "tsc --project tsconfig.build.json"
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }
