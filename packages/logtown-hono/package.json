@@ -1,6 +1,6 @@
 {
   "name": "@logtown/hono",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Hono middleware for logging using logtown",
   "keywords": [
     "logging",
