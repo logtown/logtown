@@ -1,4 +1,4 @@
-import { type MiddlewareHandler, type Context as HonoContext } from "hono";
+import type { MiddlewareHandler, Context as HonoContext } from "hono";
 import { createLogger } from "logtown";
 import type { ConnInfo, GetConnInfo } from "hono/conninfo";
 
