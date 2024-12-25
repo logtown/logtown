@@ -1,6 +1,6 @@
 {
   "name": "logtown",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Versatile log wrapper for javascript projects",
   "type": "module",
   "license": "Apache-2.0",
