@@ -63,12 +63,12 @@ registerWrapper({
 ```typescript
 import { createLogger, registerWrapper, type LoggerPayload } from "logtown";
 import debug from "debug";
-const debugLog = debug("my-logger");
 
 if (process.env.NODE_ENV === "development") {
   // the following wrapper will log debug messages only to the debug logger
   registerWrapper({
     debug: ({ level, timestamp, id, message, ...rest }: LoggerPayload) => {
+      const debugLog = debug(id);
       debugLog(message, ...rest);
     },
   });
