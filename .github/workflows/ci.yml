@@ -1,5 +1,9 @@
 name: CI
 
+permissions:
+  contents: read
+  pull-requests: read
+
 on:
   pull_request:
     branches:
@@ -25,7 +29,7 @@ jobs:
           node-version: ${{ matrix.node_version }}
 
       - name: Setup bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2.0.1
 
       - name: Install Dependencies
         run: bun install

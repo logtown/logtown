@@ -44,6 +44,7 @@ serve({
 });
 ```
 
+<!-- prettier-ignore -->
 > [!NOTE]
 > `loggerHttp` middleware does not colorize output, just a simple formatting according to the provided format. However, if you want to colorize the output, you can configure this within the Logtown Wrapper. The `loggerHttp` provides all the fields from the formatted string as an object.
 

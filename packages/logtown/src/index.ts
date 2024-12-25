@@ -228,9 +228,14 @@ export const disableOutput = (rules: LogRule[]) => {
 
 export default createLogger;
 
+const invalidKeys = ["__proto__", "constructor", "prototype"];
 function addRule(rule: LogRule): void {
   const [id, level] = rule.split(".") as [string, LogLevel | "*"];
   const pureId = id.replace("!", "").toLowerCase();
+
+  if (invalidKeys.includes(pureId.toLowerCase()) || invalidKeys.includes(level.toLowerCase())) {
+    throw new Error("Invalid logger id or level value provided.");
+  }
 
   if (!((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)[pureId]) {
     // @ts-ignore
