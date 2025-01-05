@@ -27,9 +27,9 @@
     "url": "https://github.com/logtown/logtown/issues"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "dependencies": {
     "fast-printf": "^1.6.10"

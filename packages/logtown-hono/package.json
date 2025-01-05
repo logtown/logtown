@@ -29,10 +29,10 @@
     "hono": "*"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "catalog:",
     "logtown": "workspace:*",
-    "hono": "^4.6.14",
-    "typescript": "^5.7.2"
+    "hono": "^4.6.15",
+    "typescript": "catalog:"
   },
   "exports": {
     ".": {
