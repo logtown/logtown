@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "logtown": "workspace:*",
-    "hono": "^4.7.4",
+    "hono": "^4.7.5",
     "typescript": "catalog:"
   },
   "exports": {
