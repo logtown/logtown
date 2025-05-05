@@ -10,7 +10,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.2",
+    "@changesets/cli": "^2.29.3",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "turbo": "^2.5.2"
