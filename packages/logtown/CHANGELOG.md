@@ -1,5 +1,11 @@
 # logtown
 
+## 3.1.0
+
+### Minor Changes
+
+- 0a988ff: Add GCPSimpleWrapper, maintenance, bump deps
+
 ## 3.0.2
 
 ### Patch Changes

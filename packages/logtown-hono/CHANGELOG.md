@@ -1,5 +1,12 @@
 # @logtown/hono
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [0a988ff]
+  - logtown@3.1.0
+
 ## 3.0.1
 
 ### Patch Changes
