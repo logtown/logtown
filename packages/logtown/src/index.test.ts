@@ -5,7 +5,7 @@ import {
   registerWrapper,
   disableOutput,
   LOG_LEVELS,
-  type WrapperLoggerObj,
+  type LoggerWrapper,
   LOGTOWN_RULES_SYMBOL,
 } from "./index.js";
 
@@ -65,7 +65,7 @@ describe("logtown", () => {
     });
 
     test("registers object wrapper", () => {
-      const mockWrapper: WrapperLoggerObj = {
+      const mockWrapper: LoggerWrapper = {
         verbose: vi.fn(),
         debug: vi.fn(),
         info: vi.fn(),

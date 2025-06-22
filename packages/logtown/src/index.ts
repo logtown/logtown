@@ -1,16 +1,27 @@
 import { printf as format } from "fast-printf";
 
 // Thanks to "Typed Rocks" for the help with the types
-type BaseTypes = string | number | object | bigint | boolean | symbol | null | undefined;
+type BaseTypes =
+  | string
+  | number
+  | object
+  | bigint
+  | boolean
+  | symbol
+  | null
+  | undefined;
 type Mapping = {
   [Key in "d" | "i" | "f"]: number;
 } & { s: string } & { [Key in "o" | "O"]: object };
 
-type AddMappedToArray<ArgsArray extends any[], Char> = Char extends keyof Mapping
-  ? [...ArgsArray, Mapping[Char]]
-  : ArgsArray;
+type AddMappedToArray<
+  ArgsArray extends any[],
+  Char,
+> = Char extends keyof Mapping ? [...ArgsArray, Mapping[Char]] : ArgsArray;
 
-type FirstChar<T extends string> = T extends `${infer Head}${string}` ? Head : T;
+type FirstChar<T extends string> = T extends `${infer Head}${string}`
+  ? Head
+  : T;
 type ArgsFromPlaceholder<
   RemainingString extends string,
   ArgsArray extends any[] = [],
@@ -19,8 +30,13 @@ type ArgsFromPlaceholder<
     ? ArgsFromPlaceholder<Tail, AddMappedToArray<ArgsArray, FirstChar<Tail>>>
     : ArgsFromPlaceholder<Tail, ArgsArray>
   : [...ArgsArray, ...args: any[]];
-type OptionalParams<Input> = Input extends string ? ArgsFromPlaceholder<Input> : any[];
-type LogFn = <T extends BaseTypes>(message?: T, ...optionalParams: OptionalParams<T>) => void;
+type OptionalParams<Input> = Input extends string
+  ? ArgsFromPlaceholder<Input>
+  : any[];
+type LogFn = <T extends BaseTypes>(
+  message?: T,
+  ...optionalParams: OptionalParams<T>
+) => void;
 
 export interface ILogger {
   verbose: LogFn;
@@ -30,7 +46,13 @@ export interface ILogger {
   error: LogFn;
 }
 
-export const LOG_LEVELS = ["VERBOSE", "DEBUG", "INFO", "WARN", "ERROR"] as const;
+export const LOG_LEVELS = [
+  "VERBOSE",
+  "DEBUG",
+  "INFO",
+  "WARN",
+  "ERROR",
+] as const;
 Object.freeze(LOG_LEVELS);
 
 export type LogLevel = (typeof LOG_LEVELS)[number];
@@ -50,7 +72,10 @@ export type LogRule =
 
 type ModuleLogLevelStatus = "disabled" | "enabled";
 export const LOGTOWN_RULES_SYMBOL = Symbol.for("logtown_rules");
-export type LogRuleStorage = Map<string, Map<LogLevel | "*", ModuleLogLevelStatus>>;
+export type LogRuleStorage = Map<
+  string,
+  Map<LogLevel | "*", ModuleLogLevelStatus>
+>;
 
 declare global {
   interface Global {
@@ -59,18 +84,33 @@ declare global {
 }
 
 export type WrapperLoggerFn = (payload: LoggerPayload) => void;
-type WrapperLoggerFnName = Lowercase<LogLevel> | "log";
-export type WrapperLoggerObj = Partial<Record<WrapperLoggerFnName, WrapperLoggerFn> & Record<string, any>>;
+type LoggerWrapperFnName = Lowercase<LogLevel> | "log";
+// @deprecated
+export type WrapperLoggerObj = Partial<
+  Record<LoggerWrapperFnName, WrapperLoggerFn> & Record<string, any>
+>;
+export interface LoggerWrapper
+  extends Partial<
+    Record<LoggerWrapperFnName, WrapperLoggerFn> & Record<string, any>
+  > {}
 
-const WRAPPERS: WrapperLoggerObj[] = [];
+const WRAPPERS: LoggerWrapper[] = [];
 const LOGGERS = new Map<string, Logger>();
 
-(globalThis as any)[LOGTOWN_RULES_SYMBOL] = (globalThis as any)[LOGTOWN_RULES_SYMBOL] ?? new Map();
+(globalThis as any)[LOGTOWN_RULES_SYMBOL] =
+  (globalThis as any)[LOGTOWN_RULES_SYMBOL] ?? new Map();
 
 class Logger implements ILogger {
-  constructor(public readonly id: string) {}
+  public readonly id: string;
+  constructor(id: string) {
+    this.id = id;
+  }
 
-  #log<T extends BaseTypes>(level: LogLevel, msg: T, ...optionalParams: OptionalParams<T>) {
+  #log<T extends BaseTypes>(
+    level: LogLevel,
+    msg: T,
+    ...optionalParams: OptionalParams<T>
+  ) {
     if (getStatus(this.id, level) === "disabled") {
       return;
     }
@@ -78,7 +118,10 @@ class Logger implements ILogger {
     const message =
       typeof msg === "string"
         ? format(msg, ...optionalParams)
-        : typeof msg === "object" && msg && "message" in msg && typeof msg.message === "string"
+        : typeof msg === "object" &&
+            msg &&
+            "message" in msg &&
+            typeof msg.message === "string"
           ? msg.message
           : `${String(msg)} ${optionalParams
               .map((p) => {
@@ -88,7 +131,8 @@ class Logger implements ILogger {
                 return JSON.stringify(p);
               })
               .join(" ")}`;
-    const data = typeof msg === "string" ? optionalParams : [msg, ...optionalParams];
+    const data =
+      typeof msg === "string" ? optionalParams : [msg, ...optionalParams];
 
     const payload: LoggerPayload = {
       data,
@@ -166,7 +210,9 @@ export const logger = createLogger("default");
  * registerWrapper({ log: (payload) => { console.log(payload); } });
  * ```
  */
-export function registerWrapper(wrapper: WrapperLoggerFn | WrapperLoggerObj): void {
+export function registerWrapper(
+  wrapper: WrapperLoggerFn | LoggerWrapper,
+): void {
   if (typeof wrapper === "function") {
     WRAPPERS.push({
       log: wrapper,
@@ -175,42 +221,6 @@ export function registerWrapper(wrapper: WrapperLoggerFn | WrapperLoggerObj): vo
     WRAPPERS.push(wrapper);
   }
 }
-
-export const SimpleConsoleWrapper: WrapperLoggerObj = {
-  debug: (payload) => {
-    console.debug(payload.message);
-  },
-  error: (payload) => {
-    console.error(payload.message);
-  },
-  info: (payload) => {
-    console.info(payload.message);
-  },
-  warn: (payload) => {
-    console.warn(payload.message);
-  },
-  verbose: (payload) => {
-    console.log(payload.message);
-  },
-};
-
-export const ConsoleWrapper: WrapperLoggerObj = {
-  debug: (payload) => {
-    console.debug(payload);
-  },
-  error: (payload) => {
-    console.error(payload);
-  },
-  info: (payload) => {
-    console.info(payload);
-  },
-  warn: (payload) => {
-    console.warn(payload);
-  },
-  verbose: (payload) => {
-    console.log(payload);
-  },
-};
 
 /**
  * Configures the logger. Usually you would want to use it once in your application.
@@ -232,9 +242,14 @@ function addRule(rule: LogRule): void {
   const [id, level] = rule.split(".") as [string, LogLevel | "*"];
   const pureId = id.replace("!", "").toLowerCase();
 
-  if (!((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(pureId)) {
+  if (
+    !((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(pureId)
+  ) {
     // @ts-ignore
-    ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).set(pureId, new Map());
+    ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).set(
+      pureId,
+      new Map(),
+    );
   }
 
   ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage)
@@ -244,10 +259,36 @@ function addRule(rule: LogRule): void {
 
 function getStatus(id: string, level: LogLevel): ModuleLogLevelStatus {
   const safeId = id.toLowerCase();
-  const moduleLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(safeId)?.get(level);
-  const moduleWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get(safeId)?.get("*");
-  const globalLevelRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get("*")?.get(level);
-  const globalWildcardRule = ((globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage).get("*")?.get("*");
+  const moduleLevelRule = (
+    (globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage
+  )
+    .get(safeId)
+    ?.get(level);
+  const moduleWildcardRule = (
+    (globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage
+  )
+    .get(safeId)
+    ?.get("*");
+  const globalLevelRule = (
+    (globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage
+  )
+    .get("*")
+    ?.get(level);
+  const globalWildcardRule = (
+    (globalThis as any)[LOGTOWN_RULES_SYMBOL] as LogRuleStorage
+  )
+    .get("*")
+    ?.get("*");
 
-  return globalLevelRule ?? globalWildcardRule ?? moduleLevelRule ?? moduleWildcardRule ?? "enabled";
+  return (
+    globalLevelRule ??
+    globalWildcardRule ??
+    moduleLevelRule ??
+    moduleWildcardRule ??
+    "enabled"
+  );
 }
+
+export * from "./wrappers/ConsoleWrapper.js";
+export * from "./wrappers/SimpleConsoleWrapper.js";
+export * from "./wrappers/GCPSimpleWrapper.js";

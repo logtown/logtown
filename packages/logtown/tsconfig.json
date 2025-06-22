@@ -1,11 +1,10 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "logtown",
+  "extends": "@zemd/tsconfig/tsconfig-base.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "NodeNext",
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "types": ["node"],
     "outDir": "./dist"
   },
   "include": ["**/*.ts"]

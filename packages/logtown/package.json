@@ -16,18 +16,21 @@
   "author": {
     "name": "Dmytro Zelenetskyi",
     "email": "dmytro.zelenetskyi@gmail.com",
-    "url": "https://codeandgin.co"
+    "url": "https://zemd.dev"
   },
-  "homepage": "https://github.com/logtown/logtown/tree/main",
+  "homepage": "https://github.com/logtown/logtown",
   "repository": {
     "type": "git",
-    "url": "https://github.com/logtown/logtown.git"
+    "url": "git+https://github.com/logtown/logtown.git",
+    "directory": "packages/logtown"
   },
   "bugs": {
     "url": "https://github.com/logtown/logtown/issues"
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "@zemd/tsconfig": "catalog:",
+    "tsup": "^8.5.0",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
@@ -36,18 +39,20 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsup src/index.ts --minify --dts --format esm"
   },
   "publishConfig": {
     "provenance": true

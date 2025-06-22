@@ -34,15 +34,20 @@ bun add logtown
 ## Usage
 
 ```typescript
-import { createLogger, registerWrapper, ConsoleWrapper } from "logtown";
+import { createLogger, registerWrapper, ConsoleWrapper, GCPSimpleWrapper } from "logtown";
 
 const logger = new createLogger("my-logger");
 logger.info("Hello World");
 // ^ nothing happens, because no wrappers were added
 
 registerWrapper(ConsoleWrapper);
-logger.info("Hello World");
+logger.info("Hello %s", "World");
 // ^ prints "Hello World" to the console
+
+if (process.env.IS_GSP === "true") {
+  registerWrapper(new GCPSimpleWrapper());
+}
+logger.info("This will be logged in GCP as a LogEntry which includes severity == INFO, so that filtering can be done in GCP Logs Explorer");
 ```
 
 ## Wrappers
@@ -81,5 +86,4 @@ if (process.env.NODE_ENV === "development") {
 
 ## Donate
 
-[![](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/red_rabbit)
 [![](https://img.shields.io/static/v1?label=UNITED24&message=support%20Ukraine&color=blue)](https://u24.gov.ua/)
