@@ -12,7 +12,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.5",
     "husky": "^9.1.7",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.0",
     "turbo": "^2.5.4"
   },
   "engines": {
