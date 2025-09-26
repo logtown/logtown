@@ -42,9 +42,7 @@ export class GCPSimpleWrapper implements LoggerWrapper {
     ];
 
     const meta: Record<string, any> = payload.data
-      .filter(
-        (d) => typeof d === "object" && d !== null && !(d instanceof Error),
-      )
+      .filter((d) => typeof d === "object" && d !== null && !(d instanceof Error))
       .reduce((acc, d) => {
         return Object.assign(acc, d);
       }, {});
@@ -70,10 +68,7 @@ export class GCPSimpleWrapper implements LoggerWrapper {
     if (this.#payloadType === "proto") {
       throw new Error("Proto is not supported yet.");
     }
-    const entryPayload =
-      this.#payloadType === "text"
-        ? { textPayload: payload.message }
-        : jsonPayloadData;
+    const entryPayload = this.#payloadType === "text" ? { textPayload: payload.message } : jsonPayloadData;
 
     return {
       severity: LevelToSeverity[payload.level],
