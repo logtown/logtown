@@ -30,29 +30,29 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@zemd/tsconfig": "catalog:",
-    "tsup": "^8.5.1",
+    "tsdown": "0.21.7",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "dependencies": {
-    "fast-printf": "^1.6.10"
+    "fast-printf": "1.6.10"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "scripts": {
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
-    "build": "tsup src/index.ts --minify --dts --format esm"
+    "build": "tsdown src/index.ts --minify --dts --format esm"
   },
   "publishConfig": {
     "provenance": true

@@ -10,13 +10,13 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
-    "husky": "^9.1.7",
-    "prettier": "^3.8.1",
-    "turbo": "^2.9.4"
+    "@changesets/cli": "2.30.0",
+    "husky": "9.1.7",
+    "prettier": "3.8.1",
+    "turbo": "2.9.4"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "workspaces": [
     "packages/*"
