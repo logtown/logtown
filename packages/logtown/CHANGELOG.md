@@ -1,5 +1,11 @@
 # logtown
 
+## 3.2.0
+
+### Minor Changes
+
+- a7a66b2: Repository maintenance
+
 ## 3.1.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @logtown/hono
 
+## 5.0.0
+
+### Minor Changes
+
+- a7a66b2: Repository maintenance
+
+### Patch Changes
+
+- Updated dependencies [a7a66b2]
+  - logtown@3.2.0
+
 ## 4.0.0
 
 ### Patch Changes
