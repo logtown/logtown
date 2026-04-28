@@ -3,7 +3,7 @@ packages:
 
 catalog:
   "@types/node": "25.6.0"
-  "@zemd/tsconfig": "1.6.0"
+  "@zemd/tsconfig": "2.0.0"
   "typescript": 6.0.3
   "vitest": "4.1.5"
 overrides:
