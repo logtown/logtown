@@ -78,16 +78,16 @@ export class GCPSimpleWrapper implements LoggerWrapper {
       logName: payload.id,
     };
   }
-  log(payload: LoggerPayload) {
+  log(payload: LoggerPayload): void {
     console.log(this.#createLogEntry(payload));
   }
-  error(payload: LoggerPayload) {
+  error(payload: LoggerPayload): void {
     console.error(this.#createLogEntry(payload));
   }
-  warn(payload: LoggerPayload) {
+  warn(payload: LoggerPayload): void {
     console.warn(this.#createLogEntry(payload));
   }
-  info(payload: LoggerPayload) {
+  info(payload: LoggerPayload): void {
     console.info(this.#createLogEntry(payload));
   }
 }

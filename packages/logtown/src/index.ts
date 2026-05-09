@@ -49,7 +49,7 @@ export type LogRule =
   | ExcludableLogRule<`*.${LogLevel}`>; // for example, "*.INFO" disables all INFO logs
 
 type ModuleLogLevelStatus = "disabled" | "enabled";
-export const LOGTOWN_RULES_SYMBOL = Symbol.for("logtown_rules");
+export const LOGTOWN_RULES_SYMBOL: unique symbol = Symbol.for("logtown_rules");
 export type LogRuleStorage = Map<string, Map<LogLevel | "*", ModuleLogLevelStatus>>;
 
 declare global {
@@ -114,23 +114,23 @@ class Logger implements ILogger {
     });
   }
 
-  verbose<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>) {
+  verbose<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>): void {
     this.#log("VERBOSE", msg, ...optionalParams);
   }
 
-  debug<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>) {
+  debug<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>): void {
     this.#log("DEBUG", msg, ...optionalParams);
   }
 
-  info<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>) {
+  info<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>): void {
     this.#log("INFO", msg, ...optionalParams);
   }
 
-  warn<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>) {
+  warn<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>): void {
     this.#log("WARN", msg, ...optionalParams);
   }
 
-  error<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>) {
+  error<T extends BaseTypes>(msg: T, ...optionalParams: OptionalParams<T>): void {
     this.#log("ERROR", msg, ...optionalParams);
   }
 }
@@ -161,7 +161,7 @@ export const createLogger = (id: string): Logger => {
  * logger.verbose("Hello, %s!", "world");
  * ```
  */
-export const logger = createLogger("default");
+export const logger: Logger = createLogger("default");
 
 /**
  * Registers a wrapper.
@@ -189,7 +189,7 @@ export function registerWrapper(wrapper: WrapperLoggerFn | LoggerWrapper): void 
  * disableOutput(["mymodule.*", "mymodule2.verbose", "!mymodule2.*"]);
  * ```
  */
-export const disableOutput = (rules: LogRule[]) => {
+export const disableOutput = (rules: LogRule[]): void => {
   rules.forEach((rule) => {
     addRule(rule);
   });
