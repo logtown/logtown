@@ -73,8 +73,8 @@ importers:
         specifier: 'catalog:'
         version: 25.6.0
       hono:
-        specifier: 4.12.17
-        version: 4.12.17
+        specifier: 4.12.18
+        version: 4.12.18
       logtown:
         specifier: workspace:*
         version: link:../logtown
@@ -868,8 +868,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  hono@4.12.17:
-    resolution: {integrity: sha512-FbJJNb/XgX7YW0hX/V8w5oYLztKEsRLykCMZWt1WdLtsfjzMvmoqWBA4H4t5norinq8/rh20oiZYr+WSl4UzAQ==}
+  hono@4.12.18:
+    resolution: {integrity: sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
@@ -2017,7 +2017,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  hono@4.12.17: {}
+  hono@4.12.18: {}
 
   hookable@6.1.1: {}
 
