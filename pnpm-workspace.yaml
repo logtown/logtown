@@ -5,7 +5,7 @@ catalog:
   "@types/node": "25.9.1"
   "@zemd/tsconfig": "2.0.0"
   "typescript": 6.0.3
-  "vitest": "4.1.7"
+  "vitest": "4.1.8"
 overrides:
   brace-expansion@>=2.0.0 <2.0.3: '>=2.0.3'
   glob@>=10.2.0 <10.5.0: '>=10.5.0'
