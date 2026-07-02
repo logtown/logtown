@@ -12,8 +12,8 @@
   "devDependencies": {
     "@changesets/cli": "2.31.0",
     "husky": "9.1.7",
-    "prettier": "3.8.4",
-    "turbo": "2.9.18"
+    "prettier": "3.9.4",
+    "turbo": "2.10.2"
   },
   "engines": {
     "node": ">=24"
