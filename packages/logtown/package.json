@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@zemd/tsconfig": "catalog:",
-    "tsdown": "0.22.12",
+    "tsdown": "0.22.13",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
