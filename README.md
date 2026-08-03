@@ -1,5 +1,10 @@
 # Logtown
 
+> [!CAUTION]
+> The code has been moved to https://github.com/zemd/js/tree/main/packages/logtown
+
+---
+
 [![npm](https://img.shields.io/npm/v/logtown?color=0000ff&label=npm&labelColor=000)](https://npmjs.com/package/logtown)
 
 Lightweight logging wrapper with only one dependency. Logtown is not a logger and does not depend on any loggers.
